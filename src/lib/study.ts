@@ -1,0 +1,166 @@
+import { DefaultScheduler, Rating } from "ts-fsrs";
+import { questions, type Category, type QuestionKind } from "./questions";
+export { Rating };
+export type Grade = 1 | 2 | 3 | 4;
+const schedulerPromise = DefaultScheduler({
+  version: "FSRS-7",
+  desiredRetention: 0.9,
+  enableShortTerm: true,
+  learningSteps: ["1m", "10m"],
+  relearningSteps: ["10m"],
+  enableFuzz: false,
+});
+type Scheduler = Awaited<typeof schedulerPromise>;
+type Card = ReturnType<Scheduler["newCard"]>;
+export type SavedCard = Omit<Card, "dueAt" | "lastReviewAt"> & {
+  dueAt: string;
+  lastReviewAt: string | null;
+};
+export type Review = {
+  questionId: string;
+  at: string;
+  correct: boolean;
+  grade: Grade;
+};
+export type StudyData = {
+  version: 1;
+  cards: Record<string, SavedCard>;
+  reviews: Review[];
+  bookmarks: string[];
+  goal: number;
+};
+export const emptyData = (): StudyData => ({
+  version: 1,
+  cards: {},
+  reviews: [],
+  bookmarks: [],
+  goal: 10,
+});
+export const storageKey = "kyuyo-study-v1";
+export function dayKey(date = new Date()) {
+  return new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Tokyo" }).format(
+    date,
+  );
+}
+export function restoreData(raw: string): StudyData {
+  const d = JSON.parse(raw);
+  if (
+    d.version !== 1 ||
+    !d.cards ||
+    typeof d.cards !== "object" ||
+    !Array.isArray(d.reviews) ||
+    !Array.isArray(d.bookmarks) ||
+    !Number.isInteger(d.goal) ||
+    d.goal < 1 ||
+    d.goal > 100
+  )
+    throw new Error("学習データの形式が正しくありません。");
+  for (const [id, c] of Object.entries(d.cards) as [string, SavedCard][]) {
+    if (
+      !questions.some((q) => q.id === id) ||
+      c.cardId !== id ||
+      !Number.isFinite(Date.parse(c.dueAt)) ||
+      (c.lastReviewAt !== null &&
+        !Number.isFinite(Date.parse(c.lastReviewAt))) ||
+      ![0, 1, 2, 3].includes(c.state) ||
+      !["new", "learning", "review"].includes(c.scheduleStatus) ||
+      ![
+        "stability",
+        "stabilityFast",
+        "difficulty",
+        "reps",
+        "lapses",
+        "scheduledDays",
+      ].every(
+        (k) =>
+          Number.isFinite((c as unknown as Record<string, number>)[k]) &&
+          (c as unknown as Record<string, number>)[k] >= 0,
+      )
+    )
+      throw new Error("復習カードが破損しています。");
+  }
+  if (
+    d.reviews.some(
+      (r: Review) =>
+        !questions.some((q) => q.id === r.questionId) ||
+        !Number.isFinite(Date.parse(r.at)) ||
+        typeof r.correct !== "boolean" ||
+        ![1, 2, 3, 4].includes(r.grade),
+    ) ||
+    d.bookmarks.some((id: unknown) => !questions.some((q) => q.id === id))
+  )
+    throw new Error("学習履歴が破損しています。");
+  return d;
+}
+const hydrate = (c: SavedCard): Card => ({
+  ...c,
+  dueAt: new Date(c.dueAt),
+  lastReviewAt: c.lastReviewAt ? new Date(c.lastReviewAt) : null,
+});
+export async function previews(data: StudyData, id: string, now = new Date()) {
+  const s = await schedulerPromise;
+  const card = data.cards[id]
+    ? hydrate(data.cards[id])
+    : s.newCard({ cardId: id, now });
+  return [Rating.Again, Rating.Hard, Rating.Good, Rating.Easy].map((grade) => {
+    const result = s.review({ card, grade: grade as Grade, now });
+    return {
+      grade: grade as Grade,
+      card: JSON.parse(JSON.stringify(result.card)) as SavedCard,
+    };
+  });
+}
+export async function recordReview(
+  data: StudyData,
+  id: string,
+  correct: boolean,
+  grade: Grade,
+  now = new Date(),
+): Promise<StudyData> {
+  const effectiveGrade = correct ? grade : Rating.Again;
+  const next = (await previews(data, id, now)).find(
+    (p) => p.grade === effectiveGrade,
+  )!;
+  return {
+    ...data,
+    cards: { ...data.cards, [id]: next.card },
+    reviews: [
+      ...data.reviews,
+      { questionId: id, at: now.toISOString(), correct, grade: effectiveGrade },
+    ],
+  };
+}
+export function makeQueue(
+  data: StudyData,
+  category?: Category,
+  now = new Date(),
+  kind?: QuestionKind,
+) {
+  return questions
+    .filter(
+      (q) =>
+        (!category || q.category === category) &&
+        (!kind || q.kind === kind) &&
+        (!data.cards[q.id] || new Date(data.cards[q.id].dueAt) <= now),
+    )
+    .sort((a, b) => {
+      const ca = data.cards[a.id],
+        cb = data.cards[b.id];
+      if (!ca && !cb) return 0;
+      if (!ca) return 1;
+      if (!cb) return -1;
+      return Date.parse(ca.dueAt) - Date.parse(cb.dueAt);
+    })
+    .map((q) => q.id);
+}
+export function intervalLabel(due: string, now = new Date()) {
+  const mins = Math.max(
+    1,
+    Math.round((Date.parse(due) - now.getTime()) / 60000),
+  );
+  return mins < 60
+    ? `${mins}分後`
+    : mins < 1440
+      ? `${Math.round(mins / 60)}時間後`
+      : `${Math.round(mins / 1440)}日後`;
+}

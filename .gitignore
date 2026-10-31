@@ -1,0 +1,9 @@
+node_modules
+.output
+.vercel
+dist
+.tanstack
+.env*
+!.env.example
+playwright-report
+test-results
