@@ -33,7 +33,7 @@ describe("2026 difficulty-grouped question bank", () => {
         (difficulty) =>
           questions.filter((q) => q.difficulty === difficulty).length,
       ),
-    ).toEqual([42, 60, 46]);
+    ).toEqual([46, 72, 54]);
     expect(questions.find((q) => q.id === "base-1")?.difficulty).toBe(
       "beginner",
     );

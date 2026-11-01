@@ -262,5 +262,161 @@
   "exam-law-6": {
     "format": "single",
     "falseIndex": 3
+  },
+  "exam-base-7": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-base-8": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-base-9": {
+    "format": "single",
+    "falseIndex": 0
+  },
+  "exam-base-10": {
+    "format": "single",
+    "falseIndex": 1
+  },
+  "exam-time-7": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-time-8": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-time-9": {
+    "format": "single",
+    "falseIndex": 2
+  },
+  "exam-time-10": {
+    "format": "single",
+    "falseIndex": 3
+  },
+  "exam-ins-7": {
+    "format": "pair",
+    "truth": [
+      true,
+      false,
+      true,
+      false
+    ]
+  },
+  "exam-ins-8": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-ins-9": {
+    "format": "single",
+    "falseIndex": 0
+  },
+  "exam-ins-10": {
+    "format": "single",
+    "falseIndex": 1
+  },
+  "exam-tax-7": {
+    "format": "pair",
+    "truth": [
+      true,
+      false,
+      true,
+      false
+    ]
+  },
+  "exam-tax-8": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-tax-9": {
+    "format": "single",
+    "falseIndex": 2
+  },
+  "exam-tax-10": {
+    "format": "single",
+    "falseIndex": 3
+  },
+  "exam-bonus-7": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-bonus-8": {
+    "format": "pair",
+    "truth": [
+      true,
+      false,
+      false,
+      true
+    ]
+  },
+  "exam-bonus-9": {
+    "format": "single",
+    "falseIndex": 0
+  },
+  "exam-bonus-10": {
+    "format": "single",
+    "falseIndex": 1
+  },
+  "exam-law-7": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-law-8": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-law-9": {
+    "format": "single",
+    "falseIndex": 2
+  },
+  "exam-law-10": {
+    "format": "single",
+    "falseIndex": 3
   }
 }

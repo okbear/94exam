@@ -6,7 +6,7 @@ describe("original case and reference-material questions", () => {
     expect(standardQuestions).toHaveLength(64);
     expect(recallQuestions).toHaveLength(24);
     expect(caseQuestions).toHaveLength(24);
-    expect(questions).toHaveLength(148);
+    expect(questions).toHaveLength(172);
     expect(caseQuestions.filter((q) => q.kind === "knowledge")).toHaveLength(8);
     expect(caseQuestions.filter((q) => q.referenceMaterials)).toHaveLength(16);
     for (const q of caseQuestions) {

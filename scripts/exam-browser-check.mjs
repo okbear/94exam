@@ -12,8 +12,8 @@ try {
     await page.goto(process.env.TEST_BASE_URL ?? "http://127.0.0.1:3000/", { waitUntil: "networkidle" });
     await page.getByRole("button", { name: "問題ライブラリ", exact: true }).click();
     await page.getByLabel("問題を検索").fill("正誤");
-    assert.equal(await page.locator(".library-row").count(), 37); // 36 new questions plus the earlier combination question
-    const sample = width === 360 ? questions : questions.filter((q) => /-(base|tax|law)-(1|6)$/.test(q.id));
+    assert.equal(await page.locator(".library-row").count(), questions.length + 1); // Includes the earlier case-bank combination question
+    const sample = width === 360 ? questions : questions.filter((q) => /-(base|tax|law)-(1|6|8|10)$/.test(q.id));
     for (const q of sample) {
       await page.getByLabel("問題を検索").fill(q.title);
       await page.getByRole("button", { name: `${q.title}を解く`, exact: true }).click();
@@ -41,7 +41,7 @@ try {
     assert.deepEqual(errors, []);
     await page.close();
   }
-  console.log("Exam questions passed: True/false search, all 36 answers at 360px, representative desktop answers, individual explanations and incorrect-answer feedback.");
+  console.log("Exam questions passed: True/false search, all 60 answers at 360px, representative desktop answers, individual explanations and incorrect-answer feedback.");
 } finally {
   await browser.close();
 }

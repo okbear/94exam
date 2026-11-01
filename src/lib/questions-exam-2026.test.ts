@@ -6,21 +6,23 @@ type Verdict = { format: string; truth?: boolean[]; falseIndex?: number };
 const verdicts: Record<string, Verdict> = verdictData;
 
 describe("exam-style original true/false questions", () => {
-  it("adds six questions per category with complete individual explanations", () => {
-    expect(examQuestions).toHaveLength(36);
-    expect(questions).toHaveLength(148);
+  it("adds ten questions per category with complete individual explanations", () => {
+    expect(examQuestions).toHaveLength(60);
+    expect(questions).toHaveLength(172);
     for (const category of categories) {
-      expect(examQuestions.filter((q) => q.category === category), category).toHaveLength(6);
+      expect(examQuestions.filter((q) => q.category === category), category).toHaveLength(10);
     }
     const positions = [0, 0, 0, 0];
     for (const q of examQuestions) {
       expect(q.kind).toBe("knowledge");
-      expect(q.source, q.id).toMatch(/^https:\/\/(?:www\.|jsite\.)?(?:mhlw\.go\.jp|nenkin\.go\.jp|nta\.go\.jp|kyoukaikenpo\.or\.jp|check-roudou\.mhlw\.go\.jp|startup-roudou\.mhlw\.go\.jp)\//);
+      const host = new URL(q.source!).hostname;
+      expect(["mhlw.go.jp", "nenkin.go.jp", "nta.go.jp", "kyoukaikenpo.or.jp"]
+        .some((domain) => host === domain || host.endsWith(`.${domain}`)), q.id).toBe(true);
       expect(q.explanation.split("\n"), q.id).toHaveLength(5);
       expect(q.explanation.length, q.id).toBeGreaterThan(100);
       positions[q.answer]++;
     }
-    expect(positions).toEqual([9, 9, 9, 9]);
+    expect(positions).toEqual([15, 15, 15, 15]);
     expect(new Set(questions.map((q) => q.prompt)).size).toBe(questions.length);
     expect(new Set(questions.map((q) => q.title)).size).toBe(questions.length);
   });
@@ -57,7 +59,7 @@ describe("exam-style original true/false questions", () => {
         });
       }
     }
-    expect([pairs, singles]).toEqual([24, 12]);
+    expect([pairs, singles]).toEqual([36, 24]);
   });
 
   it("checks the numeric boundary cases underlying the authored judgements", () => {
@@ -76,5 +78,15 @@ describe("exam-style original true/false questions", () => {
     expect(byId("exam-tax-4").explanation).toContain("月15万円");
     expect(12000 / 2).toBe(6000);
     expect(300000 / 10).toBe(30000);
+    const averageWage = Math.max(360000 / 90, (360000 / 45) * .6);
+    expect(averageWage).toBe(4800);
+    expect(byId("exam-base-8").explanation).toContain("今回は4,800円");
+    const transportPerMonth = 72000 / 6;
+    expect(transportPerMonth).toBe(12000);
+    expect(byId("exam-ins-7").explanation).toContain("月12,000円");
+    expect(4000 - (9 - 7) * 1610).toBe(780);
+    expect(byId("exam-tax-9").explanation).toContain("780円");
+    expect(402600 + 10400).toBe(413000);
+    expect(byId("exam-bonus-7").explanation).toContain("413,000円");
   });
 });

@@ -41,7 +41,11 @@
     "exam-ins-1",
     "exam-tax-1",
     "exam-bonus-1",
-    "exam-law-1"
+    "exam-law-1",
+    "exam-base-7",
+    "exam-time-7",
+    "exam-ins-7",
+    "exam-tax-7"
   ],
   "intermediate": [
     "recall-1",
@@ -103,7 +107,19 @@
     "exam-bonus-4",
     "exam-law-2",
     "exam-law-3",
-    "exam-law-4"
+    "exam-law-4",
+    "exam-base-8",
+    "exam-base-9",
+    "exam-time-8",
+    "exam-time-9",
+    "exam-ins-8",
+    "exam-ins-9",
+    "exam-tax-8",
+    "exam-tax-9",
+    "exam-bonus-7",
+    "exam-bonus-8",
+    "exam-law-7",
+    "exam-law-8"
   ],
   "advanced": [
     "recall-4",
@@ -151,6 +167,14 @@
     "exam-bonus-5",
     "exam-bonus-6",
     "exam-law-5",
-    "exam-law-6"
+    "exam-law-6",
+    "exam-base-10",
+    "exam-time-10",
+    "exam-ins-10",
+    "exam-tax-10",
+    "exam-bonus-9",
+    "exam-bonus-10",
+    "exam-law-9",
+    "exam-law-10"
   ]
 }
