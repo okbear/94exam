@@ -1,5 +1,11 @@
-import { ArrowRight, Bookmark, Check, X } from "lucide-react";
-import { difficultyInfo, type Question } from "../../../lib/questions";
+import { useState } from "react";
+import { Bookmark, Check, X } from "lucide-react";
+import {
+  difficultyInfo,
+  formatCalculationAnswer,
+  parseNumericAnswer,
+  type Question,
+} from "../../../lib/questions";
 import type { StudySession } from "../hooks/use-study-session";
 import { Calculator } from "./calculator";
 import { AnswerExplanation } from "./answer-explanation";
@@ -23,9 +29,10 @@ export function QuestionCard({
     busy,
     options,
     select,
-    reveal,
     grade,
   } = session;
+  const [input, setInput] = useState("");
+  const parsedInput = parseNumericAnswer(input);
   return (
     <section className="question-card card">
       <div className="question-meta">
@@ -77,34 +84,86 @@ export function QuestionCard({
         <Calculator />
       </div>
       <div className="answers">
-        {q.choices.map((choice, i) => (
-          <button
-            disabled={revealed}
-            key={i}
-            onClick={() => select(i)}
-            className={`answer ${selected === i ? "selected" : ""} ${revealed && i === q.answer ? "correct" : ""} ${revealed && selected === i && !correct ? "incorrect" : ""}`}
+        {q.kind === "knowledge" ? (
+          q.choices.map((choice, i) => (
+            <button
+              type="button"
+              disabled={revealed || busy}
+              key={i}
+              onClick={() => void select(i)}
+              className={`answer ${selected === i ? "selected" : ""} ${revealed && i === q.answer ? "correct" : ""} ${revealed && selected === i && !correct ? "incorrect" : ""}`}
+            >
+              <span className="answer-letter">{"ABCD"[i]}</span>
+              {choice}
+              <span className="answer-status">
+                {revealed && i === q.answer ? (
+                  <Check size={19} />
+                ) : revealed && selected === i ? (
+                  <X size={19} />
+                ) : null}
+              </span>
+            </button>
+          ))
+        ) : (
+          <form
+            className="calculation-answer"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (parsedInput !== null) void select(parsedInput);
+            }}
           >
-            <span className="answer-letter">{"ABCD"[i]}</span>
-            {choice}
-            <span className="answer-status">
-              {revealed && i === q.answer ? (
-                <Check size={19} />
-              ) : revealed && selected === i ? (
-                <X size={19} />
-              ) : null}
-            </span>
-          </button>
-        ))}
-      </div>
-      {!revealed ? (
+            <div className="calculation-input-row">
+              <div
+                className={`calculation-input-wrap ${revealed ? (correct ? "correct" : selected !== "unknown" ? "incorrect" : "") : ""}`}
+              >
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  aria-label="解答の数値"
+                  placeholder="数値を入力"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  disabled={revealed || busy}
+                />
+                <span className="calculation-unit">{q.unit}</span>
+                {revealed && selected !== "unknown" && (
+                  <span className="answer-status">
+                    {correct ? <Check size={19} /> : <X size={19} />}
+                  </span>
+                )}
+              </div>
+              <button
+                type="submit"
+                className="primary calculation-submit"
+                disabled={parsedInput === null || revealed || busy}
+              >
+                回答する
+              </button>
+            </div>
+            {revealed && !correct && (
+              <div className="answer correct calculation-correct-answer">
+                <span className="answer-letter">
+                  <Check size={16} />
+                </span>
+                正解: {formatCalculationAnswer(q)}
+              </div>
+            )}
+          </form>
+        )}
         <button
-          className="primary check-answer"
-          disabled={selected === null || busy}
-          onClick={() => void reveal()}
+          type="button"
+          disabled={revealed || busy}
+          onClick={() => void select("unknown")}
+          className={`answer answer-unknown ${selected === "unknown" ? "selected" : ""} ${revealed && selected === "unknown" ? "incorrect" : ""}`}
         >
-          答えを確認する <ArrowRight size={17} />
+          <span className="answer-letter">?</span>
+          わからない
+          <span className="answer-status">
+            {revealed && selected === "unknown" ? <X size={19} /> : null}
+          </span>
         </button>
-      ) : (
+      </div>
+      {revealed && (
         <AnswerExplanation
           question={q}
           correct={correct}

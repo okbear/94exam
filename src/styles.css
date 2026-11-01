@@ -734,8 +734,67 @@ footer > small {
 .answer:disabled {
   opacity: 0.65;
 }
-.check-answer {
-  width: 100%;
+.answer-unknown {
+  color: #5a7086;
+  background: #f9fbfd;
+}
+.calculation-answer {
+  display: grid;
+  gap: 11px;
+}
+.calculation-input-row {
+  display: flex;
+  gap: 10px;
+}
+.calculation-input-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #d8dee6;
+  border-radius: 4px;
+  background: #fff;
+  padding: 0 14px;
+  min-height: 54px;
+}
+.calculation-input-wrap:focus-within {
+  border-color: #6e9bc4;
+  background: #fcfdff;
+}
+.calculation-input-wrap.correct {
+  background: #edf7f0;
+  border-color: #8aba98;
+  color: #286e40;
+}
+.calculation-input-wrap.incorrect {
+  background: #fcf0ef;
+  border-color: #d9a29c;
+  color: #ad4d44;
+}
+.calculation-input-wrap input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 12px 0;
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  outline: none;
+}
+.calculation-unit {
+  font-size: 14px;
+  color: #66788a;
+  flex-shrink: 0;
+}
+.calculation-submit {
+  min-height: 54px;
+  padding: 0 20px;
+  white-space: nowrap;
+}
+.calculation-correct-answer {
+  font-weight: 700;
 }
 .explanation {
   border-top: 1px solid var(--border);
@@ -1647,14 +1706,6 @@ footer > small {
     width: 27px;
     height: 27px;
     font-size: 12px;
-  }
-  .check-answer {
-    position: sticky;
-    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    min-height: 51px;
-    font-size: 14px;
-    box-shadow: 0 0 0 7px #ffffffed;
-    margin-top: 7px;
   }
   .explanation h3 {
     font-size: 16px;

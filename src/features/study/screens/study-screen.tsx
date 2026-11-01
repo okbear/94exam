@@ -21,7 +21,7 @@ export function StudyScreen({
       <div className="page-heading">
         <div>
           <h1>演習問題</h1>
-          <p>解答を選択し、正誤を確認してください。</p>
+          <p>解答を選択または入力し、正誤を確認してください。</p>
         </div>
         <button className="secondary" onClick={() => go("home")}>
           ホームへ戻る
@@ -32,6 +32,7 @@ export function StudyScreen({
       ) : (
         <div className="study-layout">
           <QuestionCard
+            key={q.id}
             question={q}
             session={session}
             bookmarked={data.bookmarks.includes(q.id)}

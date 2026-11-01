@@ -1,7 +1,12 @@
 import { difficultyGroups } from "./difficulty";
 import { emptyData, makeQueue, recordReview, Rating } from "./study";
 import { describe, it, expect } from "vitest";
-import { questions, edition, difficulties } from "./questions";
+import {
+  questions,
+  edition,
+  difficulties,
+  parseNumericAnswer,
+} from "./questions";
 describe("2026 difficulty-grouped question bank", () => {
   it("contains over 50 unique questions in both genres", () => {
     expect(questions.length).toBeGreaterThanOrEqual(50);
@@ -53,17 +58,28 @@ describe("2026 difficulty-grouped question bank", () => {
       makeQueue(data, "給与の基礎", due, "calculation", "advanced")[0],
     ).toBe("calc-19");
   });
-  it("has four distinct answers, explanations, and correct edition scope", () => {
+  it("validates knowledge choices, calculation numeric answers, explanations, and edition scope", () => {
     for (const q of questions) {
-      expect(q.choices, q.id).toHaveLength(4);
-      expect(new Set(q.choices).size, q.id).toBe(4);
-      expect(q.answer, q.id).toBeGreaterThanOrEqual(0);
-      expect(q.answer, q.id).toBeLessThan(4);
       expect(q.explanation.length, q.id).toBeGreaterThan(15);
       expect(q.prompt, q.id).not.toMatch(/年末調整/);
-      if (q.kind === "knowledge") expect(q.source, q.id).toMatch(/^https:\/\//);
-      if (q.kind === "calculation") expect(q.formula, q.id).toBeTruthy();
+      if (q.kind === "knowledge") {
+        expect(q.choices, q.id).toHaveLength(4);
+        expect(new Set(q.choices).size, q.id).toBe(4);
+        expect(q.answer, q.id).toBeGreaterThanOrEqual(0);
+        expect(q.answer, q.id).toBeLessThan(4);
+        expect(q.source, q.id).toMatch(/^https:\/\//);
+      } else {
+        expect(q.choices, q.id).toBeUndefined();
+        expect(Number.isFinite(q.answer), q.id).toBe(true);
+        expect(q.unit, q.id).toBe("円");
+        expect(q.formula, q.id).toBeTruthy();
+      }
     }
+    expect(parseNumericAnswer("225000")).toBe(225000);
+    expect(parseNumericAnswer("225,000円")).toBe(225000);
+    expect(parseNumericAnswer("２２５，０００")).toBe(225000);
+    expect(parseNumericAnswer("")).toBeNull();
+    expect(parseNumericAnswer("abc")).toBeNull();
   });
   it("independently checks multi-step and 2026 calculation answers", () => {
     const computed: Record<string, number> = {
@@ -94,8 +110,7 @@ describe("2026 difficulty-grouped question bank", () => {
     };
     for (const [id, expected] of Object.entries(computed)) {
       const q = questions.find((q) => q.id === id)!;
-      const answer = Number(q.choices[q.answer].replace(/[円,]/g, ""));
-      expect(answer, id).toBeCloseTo(expected, 4);
+      expect(q.answer, id).toBeCloseTo(expected, 4);
     }
   });
 });

@@ -14,10 +14,11 @@ import {
 } from "../../../lib/study";
 import type { Genre } from "../types";
 export const sessionSize = 10;
+export type SelectedAnswer = number | "unknown";
 type SessionState = {
   queue: string[];
   position: number;
-  selected: number | null;
+  selected: SelectedAnswer | null;
   revealed: boolean;
   options: { grade: Grade; card: SavedCard }[];
   busy: boolean;
@@ -57,16 +58,14 @@ export function useStudySession(
         ).slice(0, sessionSize);
     setState({ ...initialSession(), queue });
   }
-  function select(selected: number) {
-    setState((s) => ({ ...s, selected }));
-  }
-  async function reveal() {
-    if (!question || state.selected === null || state.busy) return;
-    setState((s) => ({ ...s, busy: true }));
+  async function select(selected: SelectedAnswer) {
+    if (!question || state.revealed || state.busy) return;
+    setState((s) => ({ ...s, selected, busy: true }));
     try {
       const options = await previews(data, question.id);
       setState((s) => ({ ...s, options, revealed: true }));
     } catch {
+      setState((s) => ({ ...s, selected: null }));
       onError("復習時期の計算に失敗しました。もう一度お試しください。");
     } finally {
       setState((s) => ({ ...s, busy: false }));
@@ -96,6 +95,6 @@ export function useStudySession(
       setState((s) => ({ ...s, busy: false }));
     }
   }
-  return { ...state, question, correct, start, select, reveal, grade };
+  return { ...state, question, correct, start, select, grade };
 }
 export type StudySession = ReturnType<typeof useStudySession>;

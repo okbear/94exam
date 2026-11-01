@@ -46,10 +46,7 @@ describe("knowledge-applied calculation questions", () => {
     ];
     for (const [index, value] of expected.entries()) {
       const q = recallQuestions.find((q) => q.id === `recall-${index + 1}`)!;
-      expect(
-        Number(q.choices[q.answer].replace(/[円,]/g, "")),
-        q.id,
-      ).toBeCloseTo(value, 5);
+      expect(q.answer, q.id).toBeCloseTo(value, 5);
     }
   });
 });

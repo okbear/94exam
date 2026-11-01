@@ -133,8 +133,8 @@ assert.ok(
 );
 await calculatorToggle.click();
 await page.setViewportSize({ width: 1440, height: 1100 });
-await page.getByRole("button", { name: /225,000円/ }).click();
-await page.getByRole("button", { name: "答えを確認する" }).click();
+await page.getByLabel("解答の数値").fill("225000");
+await page.getByRole("button", { name: "回答する", exact: true }).click();
 await page.getByRole("heading", { name: "正解", exact: true }).waitFor();
 await page.getByRole("button", { name: /できた/ }).click();
 assert.equal(
@@ -186,8 +186,8 @@ await page
 await page.getByRole("button", { name: "問題ライブラリ", exact: true }).click();
 await page.getByLabel("問題を検索").fill("給与明細の基本");
 await page.locator(".library-question").click();
-await page.getByRole("button", { name: /225,000円/ }).click();
-await page.getByRole("button", { name: "答えを確認する" }).click();
+await page.getByLabel("解答の数値").fill("225,000");
+await page.getByRole("button", { name: "回答する", exact: true }).click();
 assert.match(
   await page.getByRole("button", { name: /できた/ }).textContent(),
   /4日後/,
@@ -233,7 +233,6 @@ await page.setViewportSize({ width: 390, height: 844 });
 await page.getByRole("button", { name: "知識問題" }).first().click();
 await page.getByRole("button", { name: "演習を開始" }).click();
 await page.getByRole("button", { name: /通貨払い/ }).click();
-await page.getByRole("button", { name: "答えを確認する" }).click();
 await page.getByRole("heading", { name: "不正解", exact: true }).waitFor();
 assert.equal(await page.locator(".rating").count(), 1);
 await page.screenshot({
@@ -249,9 +248,12 @@ assert.equal(
   1,
 );
 // Finish a complete session after the component/state split.
-for (let i = 0; i < 9; i++) {
+await page.getByRole("button", { name: /わからない/ }).click();
+await page.getByRole("heading", { name: "不正解", exact: true }).waitFor();
+assert.equal(await page.locator(".rating").count(), 1);
+await page.locator(".rating").first().click();
+for (let i = 0; i < 8; i++) {
   await page.locator(".answer").first().click();
-  await page.getByRole("button", { name: "答えを確認する" }).click();
   await page.locator(".rating").first().click();
 }
 await page.getByRole("heading", { name: "演習結果", exact: true }).waitFor();
@@ -405,8 +407,8 @@ await page.screenshot({
   path: "/private/tmp/94exam-knowledge-calculation.png",
   fullPage: true,
 });
-await page.getByRole("button", { name: /18,000円/ }).click();
-await page.getByRole("button", { name: "答えを確認する" }).click();
+await page.getByLabel("解答の数値").fill("18000");
+await page.getByRole("button", { name: "回答する", exact: true }).click();
 await page.getByRole("heading", { name: "正解", exact: true }).waitFor();
 assert.match(await page.locator(".explanation").textContent(), /25%/);
 assert.match(await page.locator(".formula").textContent(), /1\.25/);
