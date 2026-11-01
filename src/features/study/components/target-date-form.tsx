@@ -6,14 +6,13 @@ export function TargetDateForm({
   onCancel,
 }: {
   targetDate: string | null;
-  onSave: (date: string | null) => void;
+  onSave: (date: string | null) => boolean | void;
   onCancel?: () => void;
 }) {
   const [draft, setDraft] = useState(targetDate ?? "");
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onSave(draft);
-    onCancel?.();
+    if (onSave(draft) !== false) onCancel?.();
   }
   return (
     <form className="target-date-form" onSubmit={submit}>
@@ -38,9 +37,10 @@ export function TargetDateForm({
             className="secondary"
             type="button"
             onClick={() => {
-              setDraft("");
-              onSave(null);
-              onCancel?.();
+              if (onSave(null) !== false) {
+                setDraft("");
+                onCancel?.();
+              }
             }}
           >
             目標期日を解除

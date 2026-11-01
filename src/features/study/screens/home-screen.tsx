@@ -22,7 +22,7 @@ import { DailyGoal } from "../components/daily-goal";
 type Props = {
   data: StudyData;
   ready: boolean;
-  setTargetDate: (date: string | null) => void;
+  setTargetDate: (date: string | null) => boolean | void;
   summary: StudySummary;
   difficulty: DifficultyFilter;
   setDifficulty: (difficulty: DifficultyFilter) => void;

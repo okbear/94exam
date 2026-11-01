@@ -9,7 +9,7 @@ export function TargetDateBanner({
 }: {
   targetDate: string | null;
   ready: boolean;
-  onSave: (date: string | null) => void;
+  onSave: (date: string | null) => boolean | void;
 }) {
   const [editing, setEditing] = useState(false);
   const status = getTargetStatus(targetDate);

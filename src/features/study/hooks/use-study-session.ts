@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   questions,
   type Category,
@@ -39,6 +39,7 @@ export function useStudySession(
   onError: (message: string) => void,
 ) {
   const [state, setState] = useState(initialSession);
+  const busyRef = useRef(false);
   const question = questions.find((q) => q.id === state.queue[state.position]);
   const correct = !!question && state.selected === question.answer;
   function start(
@@ -56,10 +57,12 @@ export function useStudySession(
           genre === "all" ? undefined : genre,
           difficulty,
         ).slice(0, sessionSize);
+    busyRef.current = false;
     setState({ ...initialSession(), queue });
   }
   async function select(selected: SelectedAnswer) {
-    if (!question || state.revealed || state.busy) return;
+    if (!question || state.revealed || state.busy || busyRef.current) return;
+    busyRef.current = true;
     setState((s) => ({ ...s, selected, busy: true }));
     try {
       const options = await previews(data, question.id);
@@ -68,11 +71,13 @@ export function useStudySession(
       setState((s) => ({ ...s, selected: null }));
       onError("復習時期の計算に失敗しました。もう一度お試しください。");
     } finally {
+      busyRef.current = false;
       setState((s) => ({ ...s, busy: false }));
     }
   }
   async function grade(grade: Grade) {
-    if (!question || state.busy || !state.revealed) return;
+    if (!question || state.busy || !state.revealed || busyRef.current) return;
+    busyRef.current = true;
     setState((s) => ({ ...s, busy: true }));
     try {
       onUpdate(await recordReview(data, question.id, correct, grade));
@@ -92,6 +97,7 @@ export function useStudySession(
           : "回答の記録に失敗しました。もう一度お試しください。",
       );
     } finally {
+      busyRef.current = false;
       setState((s) => ({ ...s, busy: false }));
     }
   }

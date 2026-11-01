@@ -4,7 +4,7 @@ import type { Review, SavedCard, StudyData } from "./study";
 
 export const maxBackupBytes = 8 * 1024 * 1024;
 export const maxReviews = 50_000;
-const questionIds = new Set(questions.map((q) => q.id));
+const defaultQuestionIds = new Set(questions.map((q) => q.id));
 const invalid = () => new Error("学習データの形式が正しくありません。");
 function object(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
@@ -31,13 +31,17 @@ function timestamp(value: unknown): value is string {
     new Date(value).toISOString() === value
   );
 }
-function questionId(value: unknown): value is string {
-  return typeof value === "string" && questionIds.has(value);
+function questionId(value: unknown, validIds: ReadonlySet<string>): value is string {
+  return typeof value === "string" && validIds.has(value);
 }
-function card(id: string, value: unknown): SavedCard {
+function card(
+  id: string,
+  value: unknown,
+  validIds: ReadonlySet<string>,
+): SavedCard {
   if (
     !object(value) ||
-    !questionId(id) ||
+    !questionId(id, validIds) ||
     value.cardId !== id ||
     !timestamp(value.dueAt) ||
     !(value.lastReviewAt === null || timestamp(value.lastReviewAt)) ||
@@ -69,10 +73,10 @@ function card(id: string, value: unknown): SavedCard {
     learningStep: value.learningStep,
   };
 }
-function review(value: unknown): Review {
+function review(value: unknown, validIds: ReadonlySet<string>): Review {
   if (
     !object(value) ||
-    !questionId(value.questionId) ||
+    !questionId(value.questionId, validIds) ||
     !timestamp(value.at) ||
     typeof value.correct !== "boolean" ||
     ![1, 2, 3, 4].includes(value.grade as number)
@@ -85,7 +89,10 @@ function review(value: unknown): Review {
     grade: value.grade as Review["grade"],
   };
 }
-export function restoreData(raw: string): StudyData {
+export function restoreData(
+  raw: string,
+  validIds: ReadonlySet<string> = defaultQuestionIds,
+): StudyData {
   // Check length before allocating an encoded copy or parsing attacker-controlled JSON.
   if (
     raw.length > maxBackupBytes ||
@@ -103,18 +110,18 @@ export function restoreData(raw: string): StudyData {
     value.version !== 2 ||
     !(value.targetDate === null || isTargetDate(value.targetDate)) ||
     !object(value.cards) ||
-    Object.keys(value.cards).length > questionIds.size ||
+    Object.keys(value.cards).length > validIds.size ||
     !Array.isArray(value.reviews) ||
     value.reviews.length > maxReviews ||
     !Array.isArray(value.bookmarks) ||
-    value.bookmarks.length > questionIds.size ||
+    value.bookmarks.length > validIds.size ||
     !integer(value.goal) ||
     value.goal < 1 ||
     value.goal > 100
   )
     throw invalid();
   const bookmarks = value.bookmarks.map((id: unknown) => {
-    if (!questionId(id)) throw invalid();
+    if (!questionId(id, validIds)) throw invalid();
     return id;
   });
   if (new Set(bookmarks).size !== bookmarks.length) throw invalid();
@@ -123,15 +130,21 @@ export function restoreData(raw: string): StudyData {
     version: 2,
     targetDate: value.targetDate,
     cards: Object.fromEntries(
-      Object.entries(value.cards).map(([id, value]) => [id, card(id, value)]),
+      Object.entries(value.cards).map(([id, value]) => [
+        id,
+        card(id, value, validIds),
+      ]),
     ),
-    reviews: value.reviews.map(review),
+    reviews: value.reviews.map((item) => review(item, validIds)),
     bookmarks,
     goal: value.goal,
   };
 }
-export async function readBackupFile(file: File): Promise<StudyData> {
+export async function readBackupFile(
+  file: File,
+  validIds: ReadonlySet<string> = defaultQuestionIds,
+): Promise<StudyData> {
   if (file.size > maxBackupBytes)
     throw new Error("バックアップは8MB以下のファイルを選んでください。");
-  return restoreData(await file.text());
+  return restoreData(await file.text(), validIds);
 }

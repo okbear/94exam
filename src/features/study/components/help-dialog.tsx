@@ -19,10 +19,10 @@ export function HelpDialog({ onClose }: { onClose: () => void }) {
         onClick={(e) => e.stopPropagation()}
         onKeyDown={(e) => {
           if (e.key !== "Tab") return;
-          const buttons =
-            e.currentTarget.querySelectorAll<HTMLButtonElement>("button");
-          const first = buttons[0],
-            last = buttons[buttons.length - 1];
+          const focusables =
+            e.currentTarget.querySelectorAll<HTMLElement>("button, [href]");
+          const first = focusables[0],
+            last = focusables[focusables.length - 1];
           if (e.shiftKey && document.activeElement === first) {
             e.preventDefault();
             last.focus();
@@ -56,7 +56,7 @@ export function HelpDialog({ onClose }: { onClose: () => void }) {
         </p>
         <h3>2026年度版の収録問題</h3>
         <p>
-          2026年度版ののオリジナル問題{questions.length}
+          2026年度版のオリジナル問題{questions.length}
           問を収録。初級は基本知識・単純計算、中級は条件判断・複数手順の計算、上級は例外・上限・総合演習です。知識問題・計算問題や分野と組み合わせて選べます。難易度は当サイト独自の分類です。法令の基準日は2026年9月1日、調査確認日は2026年11月1日です。
         </p>
         <a

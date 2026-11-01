@@ -101,7 +101,7 @@ export function useStudyData() {
   function setGoal(goal: number) {
     setData((d) => ({ ...d, goal }));
   }
-  function setTargetDate(targetDate: string | null) {
+  function setTargetDate(targetDate: string | null): boolean {
     try {
       const next = changeTargetDate(data, targetDate);
       setData(next);
@@ -110,12 +110,14 @@ export function useStudyData() {
           ? "目標期日を保存し、復習予定を調整しました。"
           : "目標期日を解除しました。今後の回答は通常の復習間隔で記録します。",
       );
+      return true;
     } catch (error) {
       setNotice(
         error instanceof Error
           ? error.message
           : "目標期日を保存できませんでした。",
       );
+      return false;
     }
   }
   return {

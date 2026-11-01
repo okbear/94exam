@@ -34,13 +34,18 @@ export function LibraryScreen({
   start,
 }: Props) {
   const { category: filter, search, onlyBookmarks } = filters;
+  const normalizedQuery = search.trim().normalize("NFKC").toLowerCase();
   const visibleQuestions = questions.filter(
     (q) =>
       (filter === "all" || q.category === filter) &&
       (kind === "all" || q.kind === kind) &&
       (difficulty === "all" || q.difficulty === difficulty) &&
       (!onlyBookmarks || data.bookmarks.includes(q.id)) &&
-      `${q.title}${q.prompt}${q.category}`.includes(search),
+      (!normalizedQuery ||
+        `${q.title}${q.prompt}${q.category}`
+          .normalize("NFKC")
+          .toLowerCase()
+          .includes(normalizedQuery)),
   );
   return (
     <>

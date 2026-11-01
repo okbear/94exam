@@ -6,7 +6,7 @@ import { BackupControls } from "../components/backup-controls";
 type Props = {
   goal: number;
   targetDate: string | null;
-  setTargetDate: (date: string | null) => void;
+  setTargetDate: (date: string | null) => boolean | void;
   setGoal: (goal: number) => void;
   exportData: () => void;
   importData: (file?: File) => Promise<void>;
