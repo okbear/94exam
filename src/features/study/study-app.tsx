@@ -1,3 +1,4 @@
+import { StorageRecovery } from "./components/storage-recovery";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { getStudySummary } from "../../lib/study-summary";
@@ -65,57 +66,68 @@ export function StudyApp() {
           </button>
         </div>
       )}
-      {view === "home" && (
-        <HomeScreen
-          data={store.data}
-          ready={store.ready}
-          setTargetDate={store.setTargetDate}
-          summary={summary}
-          difficulty={difficulty}
-          setDifficulty={setDifficulty}
-          kind={kind}
-          setKind={setKind}
-          start={start}
-          go={go}
-          onHelp={() => setHelp(true)}
-        />
-      )}
-      {view === "study" && (
-        <StudyScreen
-          data={store.data}
-          session={session}
-          bookmark={store.bookmark}
-          go={go}
-        />
-      )}
-      {view === "library" && (
-        <LibraryScreen
-          data={store.data}
-          difficulty={difficulty}
-          setDifficulty={setDifficulty}
-          kind={kind}
-          setKind={setKind}
-          filters={filters}
-          onFiltersChange={setFilters}
-          bookmark={store.bookmark}
-          start={start}
-        />
-      )}
-      {view === "stats" && (
-        <StatisticsScreen data={store.data} summary={summary} />
-      )}
-      {view === "settings" && (
-        <SettingsScreen
-          goal={store.data.goal}
-          targetDate={store.data.targetDate}
-          setTargetDate={store.setTargetDate}
-          setGoal={store.setGoal}
-          exportData={store.exportData}
+      {store.recoveryRequired && (
+        <StorageRecovery
+          exportOriginalData={store.exportOriginalData}
           importData={store.importData}
           onReset={store.reset}
         />
       )}
-      {help && <HelpDialog onClose={() => setHelp(false)} />}
+      {!store.recoveryRequired && (
+        <>
+          {view === "home" && (
+            <HomeScreen
+              data={store.data}
+              ready={store.ready}
+              setTargetDate={store.setTargetDate}
+              summary={summary}
+              difficulty={difficulty}
+              setDifficulty={setDifficulty}
+              kind={kind}
+              setKind={setKind}
+              start={start}
+              go={go}
+              onHelp={() => setHelp(true)}
+            />
+          )}
+          {view === "study" && (
+            <StudyScreen
+              data={store.data}
+              session={session}
+              bookmark={store.bookmark}
+              go={go}
+            />
+          )}
+          {view === "library" && (
+            <LibraryScreen
+              data={store.data}
+              difficulty={difficulty}
+              setDifficulty={setDifficulty}
+              kind={kind}
+              setKind={setKind}
+              filters={filters}
+              onFiltersChange={setFilters}
+              bookmark={store.bookmark}
+              start={start}
+            />
+          )}
+          {view === "stats" && (
+            <StatisticsScreen data={store.data} summary={summary} />
+          )}
+          {view === "settings" && (
+            <SettingsScreen
+              goal={store.data.goal}
+              targetDate={store.data.targetDate}
+              setTargetDate={store.setTargetDate}
+              setGoal={store.setGoal}
+              exportData={store.exportData}
+              importData={store.importData}
+              onReset={store.reset}
+            />
+          )}
+          {help && <HelpDialog onClose={() => setHelp(false)} />}
+        </>
+      )}
     </StudyLayout>
   );
 }

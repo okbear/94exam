@@ -4,7 +4,9 @@ const browser = await chromium.launch({ channel: "chrome", headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
-await page.goto("http://127.0.0.1:3000/", { waitUntil: "networkidle" });
+await page.goto(process.env.TEST_BASE_URL ?? "http://127.0.0.1:3000/", {
+  waitUntil: "networkidle",
+});
 await page.screenshot({
   path: "/private/tmp/94exam-desktop.png",
   fullPage: true,
@@ -288,7 +290,10 @@ assert.equal(
   ),
   null,
 );
-assert.equal(await page.getByLabel("目標期日", { exact: true }).inputValue(), "");
+assert.equal(
+  await page.getByLabel("目標期日", { exact: true }).inputValue(),
+  "",
+);
 await page.getByLabel("目標期日", { exact: true }).fill(targetDates.later);
 await page.getByRole("button", { name: "目標期日を設定", exact: true }).click();
 await page.getByRole("combobox").selectOption("15");

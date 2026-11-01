@@ -86,8 +86,12 @@ export function useStudySession(
         options: [],
       }));
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch {
-      onError("回答の記録に失敗しました。もう一度お試しください。");
+    } catch (error) {
+      onError(
+        error instanceof Error
+          ? error.message
+          : "回答の記録に失敗しました。もう一度お試しください。",
+      );
     } finally {
       setState((s) => ({ ...s, busy: false }));
     }

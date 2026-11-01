@@ -1,3 +1,4 @@
+import { readBackupFile } from "../../../lib/study-backup";
 import {
   changeTargetDate,
   reconcileTargetSchedule,
@@ -15,19 +16,18 @@ export function useStudyData() {
   const [data, setData] = useState<StudyData>(emptyData);
   const [ready, setReady] = useState(false);
   const [notice, setNotice] = useState("");
+  const [recoveryRequired, setRecoveryRequired] = useState(false);
   useEffect(() => {
     try {
       const raw = localStorage.getItem(storageKey);
-      if (raw) setData(reconcileTargetSchedule(restoreData(raw)));
+      if (raw !== null) setData(reconcileTargetSchedule(restoreData(raw)));
     } catch {
-      setNotice(
-        "保存データを読み込めませんでした。設定からバックアップを復元できます。",
-      );
+      setRecoveryRequired(true);
     }
     setReady(true);
   }, []);
   useEffect(() => {
-    if (!ready) return;
+    if (!ready || recoveryRequired) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify(data));
     } catch {
@@ -35,7 +35,7 @@ export function useStudyData() {
         "履歴を保存できません。設定からバックアップをダウンロードしてください。",
       );
     }
-  }, [data, ready]);
+  }, [data, ready, recoveryRequired]);
   function bookmark(id: string) {
     setData((d) => ({
       ...d,
@@ -44,26 +44,41 @@ export function useStudyData() {
         : [...d.bookmarks, id],
     }));
   }
-  function exportData() {
+  function download(raw: string, filename: string) {
     const url = URL.createObjectURL(
-      new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }),
+      new Blob([raw], { type: "application/json" }),
     );
     const a = document.createElement("a");
     a.href = url;
-    a.download = `kyuyo-study-${dayKey()}.json`;
+    a.download = filename;
     a.click();
-    URL.revokeObjectURL(url);
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  function exportData() {
+    download(JSON.stringify(data, null, 2), `kyuyo-study-${dayKey()}.json`);
+  }
+  function exportOriginalData() {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw === null) throw new Error("保存データが見つかりません。");
+      download(raw, `kyuyo-study-recovery-${dayKey()}.json`);
+    } catch {
+      setNotice(
+        "元データを書き出せませんでした。ブラウザの保存設定を確認してください。",
+      );
+    }
   }
   async function importData(file?: File) {
     if (!file) return;
     try {
-      const next = reconcileTargetSchedule(restoreData(await file.text()));
+      const next = reconcileTargetSchedule(await readBackupFile(file));
       if (
         window.confirm(
           "現在の履歴を、選択したバックアップの内容に置き換えますか？",
         )
       ) {
         setData(next);
+        setRecoveryRequired(false);
         setNotice("学習データを復元しました。");
       }
     } catch (e) {
@@ -79,6 +94,7 @@ export function useStudyData() {
         goal: current.goal,
         targetDate: current.targetDate,
       }));
+      setRecoveryRequired(false);
       setNotice("学習履歴をリセットしました。");
     }
   }
@@ -106,6 +122,8 @@ export function useStudyData() {
     data,
     setData,
     ready,
+    recoveryRequired,
+    exportOriginalData,
     notice,
     setNotice,
     bookmark,

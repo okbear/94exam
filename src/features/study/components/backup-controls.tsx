@@ -3,8 +3,10 @@ import { Download, Upload } from "lucide-react";
 export function BackupControls({
   exportData,
   importData,
+  exportLabel = "書き出す",
 }: {
   exportData: () => void;
+  exportLabel?: string;
   importData: (file?: File) => Promise<void>;
 }) {
   const upload = useRef<HTMLInputElement>(null);
@@ -17,12 +19,12 @@ export function BackupControls({
       {" "}
       <h3>学習データのバックアップ</h3>
       <p>
-        履歴はこのブラウザに保存されます。端末を変えるときは、データを書き出して復元できます。
+        履歴はこのブラウザに保存されます。端末を変えるときは、データを書き出して復元できます。復元するファイルは8MB以下、回答履歴は50,000件までです。
       </p>
       <div className="button-row">
         <button className="secondary" onClick={exportData}>
           <Download size={16} />
-          書き出す
+          {exportLabel}
         </button>
         <button className="secondary" onClick={() => upload.current?.click()}>
           <Upload size={16} />

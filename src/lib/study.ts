@@ -1,4 +1,5 @@
-import { isTargetDate, limitReviewToTarget } from "./target-schedule";
+import { maxReviews } from "./study-backup";
+import { limitReviewToTarget } from "./target-schedule";
 import { DefaultScheduler, Rating } from "ts-fsrs";
 import {
   questions,
@@ -50,57 +51,7 @@ export function dayKey(date = new Date()) {
     date,
   );
 }
-export function restoreData(raw: string): StudyData {
-  const d = JSON.parse(raw);
-  if (
-    d.version !== 2 ||
-    (d.targetDate !== null && !isTargetDate(d.targetDate)) ||
-    !d.cards ||
-    typeof d.cards !== "object" ||
-    !Array.isArray(d.reviews) ||
-    !Array.isArray(d.bookmarks) ||
-    !Number.isInteger(d.goal) ||
-    d.goal < 1 ||
-    d.goal > 100
-  )
-    throw new Error("学習データの形式が正しくありません。");
-  for (const [id, c] of Object.entries(d.cards) as [string, SavedCard][]) {
-    if (
-      !questions.some((q) => q.id === id) ||
-      c.cardId !== id ||
-      !Number.isFinite(Date.parse(c.dueAt)) ||
-      (c.lastReviewAt !== null &&
-        !Number.isFinite(Date.parse(c.lastReviewAt))) ||
-      ![0, 1, 2, 3].includes(c.state) ||
-      !["new", "learning", "review"].includes(c.scheduleStatus) ||
-      ![
-        "stability",
-        "stabilityFast",
-        "difficulty",
-        "reps",
-        "lapses",
-        "scheduledDays",
-      ].every(
-        (k) =>
-          Number.isFinite((c as unknown as Record<string, number>)[k]) &&
-          (c as unknown as Record<string, number>)[k] >= 0,
-      )
-    )
-      throw new Error("復習カードが破損しています。");
-  }
-  if (
-    d.reviews.some(
-      (r: Review) =>
-        !questions.some((q) => q.id === r.questionId) ||
-        !Number.isFinite(Date.parse(r.at)) ||
-        typeof r.correct !== "boolean" ||
-        ![1, 2, 3, 4].includes(r.grade),
-    ) ||
-    d.bookmarks.some((id: unknown) => !questions.some((q) => q.id === id))
-  )
-    throw new Error("学習履歴が破損しています。");
-  return d;
-}
+export { restoreData } from "./study-backup";
 const hydrate = (c: SavedCard): Card => ({
   ...c,
   dueAt: new Date(c.dueAt),
@@ -131,6 +82,10 @@ export async function recordReview(
   grade: Grade,
   now = new Date(),
 ): Promise<StudyData> {
+  if (data.reviews.length >= maxReviews)
+    throw new Error(
+      "回答履歴が上限（50,000件）に達しました。バックアップを書き出し、設定から履歴をリセットしてください。",
+    );
   const effectiveGrade = correct ? grade : Rating.Again;
   const next = (await previews(data, id, now)).find(
     (p) => p.grade === effectiveGrade,
