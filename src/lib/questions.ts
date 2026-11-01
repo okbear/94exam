@@ -1,6 +1,8 @@
 import editionData from "../data/edition-2026.json";
 import recallQuestionsData from "../data/questions-recall-2026.json";
 import standardQuestionsData from "../data/questions-standard-2026.json";
+import caseQuestionsData from "../data/questions-cases-2026.json";
+import examQuestionsData from "../data/questions-exam-2026.json";
 import {
   difficulties,
   difficultyInfo,
@@ -18,6 +20,13 @@ export const categories = [
 ] as const;
 export type Category = (typeof categories)[number];
 export type QuestionKind = "knowledge" | "calculation";
+export type ReferenceMaterial = {
+  title: string;
+  columns: string[];
+  rows: string[][];
+  note: string;
+  source?: string;
+};
 type QuestionBase = {
   difficulty: Difficulty;
   id: string;
@@ -26,6 +35,7 @@ type QuestionBase = {
   prompt: string;
   explanation: string;
   materials?: { label: string; value: string }[];
+  referenceMaterials?: ReferenceMaterial[];
   source?: string;
 };
 export type KnowledgeQuestion = QuestionBase & {
@@ -100,6 +110,26 @@ export function parseQuestion(raw: unknown): Question {
     throw new Error(`出典URLの形式が正しくありません: ${id}`);
   }
   const source = entry.source;
+  let referenceMaterials: ReferenceMaterial[] | undefined;
+  if (entry.referenceMaterials !== undefined) {
+    if (!Array.isArray(entry.referenceMaterials) || !entry.referenceMaterials.length)
+      throw new Error(`別資料の形式が正しくありません: ${id}`);
+    referenceMaterials = entry.referenceMaterials.map((raw) => {
+      const m = raw as ReferenceMaterial | null;
+      if (!m || typeof m !== "object" || Array.isArray(m) ||
+        typeof m.title !== "string" || !m.title.trim() ||
+        typeof m.note !== "string" || !m.note.trim() ||
+        !Array.isArray(m.columns) || !m.columns.length ||
+        !m.columns.every((c) => typeof c === "string" && c.trim()) ||
+        !Array.isArray(m.rows) || !m.rows.length ||
+        !m.rows.every((row) => Array.isArray(row) && row.length === m.columns.length &&
+          row.every((cell) => typeof cell === "string" && cell.trim())) ||
+        (m.source !== undefined && (typeof m.source !== "string" || !m.source.startsWith("https://"))))
+        throw new Error(`別資料の形式が正しくありません: ${id}`);
+      return { title: m.title, columns: [...m.columns], rows: m.rows.map((row) => [...row]),
+        note: m.note, ...(m.source ? { source: m.source } : {}) };
+    });
+  }
   if (entry.materials !== undefined && !Array.isArray(entry.materials)) {
     throw new Error(`資料データの形式が正しくありません: ${id}`);
   }
@@ -126,6 +156,7 @@ export function parseQuestion(raw: unknown): Question {
     prompt,
     explanation,
     ...(materials ? { materials } : {}),
+    ...(referenceMaterials ? { referenceMaterials } : {}),
     ...(source ? { source } : {}),
   };
   if (kind === "knowledge") {
@@ -188,4 +219,8 @@ export const standardQuestions: Question[] = parseQuestionBank(
 );
 export const recallQuestions: Question[] =
   parseQuestionBank(recallQuestionsData);
-export const questions: Question[] = [...standardQuestions, ...recallQuestions];
+export const caseQuestions: Question[] = parseQuestionBank(caseQuestionsData);
+export const examQuestions: Question[] = parseQuestionBank(examQuestionsData);
+export const questions: Question[] = parseQuestionBank([
+  ...standardQuestions, ...recallQuestions, ...caseQuestions, ...examQuestions,
+]);

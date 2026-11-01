@@ -31,7 +31,7 @@ export function LibraryQuestion({
             : q.kind === "calculation"
               ? "計算"
               : "知識"}{" "}
-          · {q.category}
+          · {q.category}{q.referenceMaterials ? " · 別資料あり" : ""}
         </small>
         <b>{q.title}</b>
         <span>{q.prompt}</span>

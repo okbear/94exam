@@ -42,7 +42,7 @@ export function LibraryScreen({
       (difficulty === "all" || q.difficulty === difficulty) &&
       (!onlyBookmarks || data.bookmarks.includes(q.id)) &&
       (!normalizedQuery ||
-        `${q.title}${q.prompt}${q.category}`
+        `${q.title}${q.prompt}${q.category}${q.referenceMaterials ? "別資料" + q.referenceMaterials.map((m) => m.title).join("") : ""}`
           .normalize("NFKC")
           .toLowerCase()
           .includes(normalizedQuery)),

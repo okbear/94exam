@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { questions, recallQuestions } from "./questions";
+import { questions, recallQuestions, standardQuestions } from "./questions";
 describe("knowledge-applied calculation questions", () => {
   it("adds 24 questions without removing any of the original 64", () => {
-    expect(questions).toHaveLength(88);
-    expect(questions.filter((q) => !q.knowledgeRequired)).toHaveLength(64);
+    expect(questions).toHaveLength(148);
+    expect(standardQuestions).toHaveLength(64);
     expect(recallQuestions).toHaveLength(24);
     for (const q of recallQuestions) {
       expect(q.kind).toBe("calculation");

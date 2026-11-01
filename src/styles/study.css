@@ -68,9 +68,13 @@
   font-weight: 700;
 }
 .question-prompt {
+  white-space: pre-line;
   font-size: 15px;
   line-height: 2.1;
   overflow-wrap: anywhere;
+}
+.explanation > p {
+  white-space: pre-line;
 }
 .question-edition {
   font-size: 10px;
@@ -340,3 +344,16 @@
 .completion .primary {
   margin-top: 10px;
 }
+
+.reference-materials { margin: 20px 0; min-width: 0; }
+.reference-materials > p { font-size: 13px; color: #53677b; }
+.reference-material { border: 1px solid #d5dfe8; border-radius: 8px; margin: 10px 0; min-width: 0; }
+.reference-material summary { padding: 14px; cursor: pointer; font-weight: 700; font-size: 14px; overflow-wrap: anywhere; }
+.reference-material summary:focus-visible, .reference-table-scroll:focus-visible { outline: 2px solid #486b94; outline-offset: 2px; }
+.reference-material > p { margin: 0; padding: 0 14px 12px; font-size: 13px; line-height: 1.8; }
+.reference-table-scroll { overflow-x: auto; margin: 0 14px 14px; }
+.reference-table-scroll table { border-collapse: collapse; width: 100%; font-size: 13px; white-space: nowrap; }
+.reference-table-scroll caption { text-align: left; padding-bottom: 8px; color: #53677b; }
+.reference-table-scroll th, .reference-table-scroll td { padding: 10px 12px; border: 1px solid #d5dfe8; text-align: left; }
+.reference-table-scroll thead { background: #edf3f8; }
+.reference-material > a { margin: 0 14px 14px; }

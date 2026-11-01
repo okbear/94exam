@@ -1,0 +1,266 @@
+{
+  "exam-base-1": {
+    "format": "pair",
+    "truth": [
+      true,
+      false,
+      true,
+      false
+    ]
+  },
+  "exam-base-2": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-base-3": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-base-4": {
+    "format": "pair",
+    "truth": [
+      true,
+      false,
+      false,
+      true
+    ]
+  },
+  "exam-base-5": {
+    "format": "single",
+    "falseIndex": 0
+  },
+  "exam-base-6": {
+    "format": "single",
+    "falseIndex": 1
+  },
+  "exam-time-1": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      false,
+      true
+    ]
+  },
+  "exam-time-2": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-time-3": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      false,
+      true
+    ]
+  },
+  "exam-time-4": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-time-5": {
+    "format": "single",
+    "falseIndex": 2
+  },
+  "exam-time-6": {
+    "format": "single",
+    "falseIndex": 3
+  },
+  "exam-ins-1": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-ins-2": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-ins-3": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      false,
+      true
+    ]
+  },
+  "exam-ins-4": {
+    "format": "pair",
+    "truth": [
+      true,
+      false,
+      true,
+      false
+    ]
+  },
+  "exam-ins-5": {
+    "format": "single",
+    "falseIndex": 0
+  },
+  "exam-ins-6": {
+    "format": "single",
+    "falseIndex": 1
+  },
+  "exam-tax-1": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-tax-2": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-tax-3": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      false,
+      true
+    ]
+  },
+  "exam-tax-4": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-tax-5": {
+    "format": "single",
+    "falseIndex": 2
+  },
+  "exam-tax-6": {
+    "format": "single",
+    "falseIndex": 3
+  },
+  "exam-bonus-1": {
+    "format": "pair",
+    "truth": [
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "exam-bonus-2": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-bonus-3": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-bonus-4": {
+    "format": "pair",
+    "truth": [
+      true,
+      false,
+      true,
+      false
+    ]
+  },
+  "exam-bonus-5": {
+    "format": "single",
+    "falseIndex": 0
+  },
+  "exam-bonus-6": {
+    "format": "single",
+    "falseIndex": 1
+  },
+  "exam-law-1": {
+    "format": "pair",
+    "truth": [
+      true,
+      false,
+      true,
+      false
+    ]
+  },
+  "exam-law-2": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      false,
+      true
+    ]
+  },
+  "exam-law-3": {
+    "format": "pair",
+    "truth": [
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "exam-law-4": {
+    "format": "pair",
+    "truth": [
+      true,
+      false,
+      false,
+      true
+    ]
+  },
+  "exam-law-5": {
+    "format": "single",
+    "falseIndex": 2
+  },
+  "exam-law-6": {
+    "format": "single",
+    "falseIndex": 3
+  }
+}

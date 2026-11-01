@@ -10,6 +10,7 @@ import type { StudySession } from "../hooks/use-study-session";
 import { Calculator } from "./calculator";
 import { Memo } from "./memo";
 import { AnswerExplanation } from "./answer-explanation";
+import { ReferenceMaterials } from "./reference-materials";
 export function QuestionCard({
   question: q,
   session,
@@ -70,6 +71,7 @@ export function QuestionCard({
       </span>
       <h2>{q.title}</h2>
       <p className="question-prompt">{q.prompt}</p>
+      {q.referenceMaterials && <ReferenceMaterials key={resetKey} materials={q.referenceMaterials} />}
       {q.materials && (
         <table className="question-materials">
           <caption>この問題で使う資料</caption>
