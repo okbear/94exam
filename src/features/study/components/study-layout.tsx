@@ -39,7 +39,7 @@ export function StudyLayout({
             給与の学び舎<small>2026年度版</small>
           </span>
         </a>
-        <div className="course-label">給与計算実務能力検定 2級</div>
+        <div className="course-label">給与計算の演習</div>
         <nav>
           {nav.map((n) => (
             <button
@@ -68,7 +68,7 @@ export function StudyLayout({
       <div className="main-shell">
         <header className="topbar">
           <div className="breadcrumb">
-            <span className="edition-badge">2026年度版・2級</span>{" "}
+            <span className="edition-badge">2026年度版</span>{" "}
             <ChevronRight size={13} />{" "}
             <span>
               {view === "study"
@@ -87,8 +87,8 @@ export function StudyLayout({
           {children}
           <footer>
             <span>給与の学び舎</span>
-            <span>2026年度版・2級</span>
-            <small>2026年度版 · 非公式学習サポート</small>
+            <span>2026年度版</span>
+            <small>2026年度版 · 給与計算の学習サポート</small>
           </footer>
         </main>
       </div>

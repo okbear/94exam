@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { questions, type Category } from "../../../lib/questions";
+import {
+  questions,
+  type Category,
+  type Difficulty,
+} from "../../../lib/questions";
 import {
   makeQueue,
   previews,
@@ -36,7 +40,12 @@ export function useStudySession(
   const [state, setState] = useState(initialSession);
   const question = questions.find((q) => q.id === state.queue[state.position]);
   const correct = !!question && state.selected === question.answer;
-  function start(genre: Genre, category?: Category, questionId?: string) {
+  function start(
+    genre: Genre,
+    category?: Category,
+    questionId?: string,
+    difficulty?: Difficulty,
+  ) {
     const queue = questionId
       ? [questionId]
       : makeQueue(
@@ -44,6 +53,7 @@ export function useStudySession(
           category,
           new Date(),
           genre === "all" ? undefined : genre,
+          difficulty,
         ).slice(0, sessionSize);
     setState({ ...initialSession(), queue });
   }

@@ -1,6 +1,8 @@
+import { difficultyGroups } from "./difficulty";
+import { emptyData, makeQueue, recordReview, Rating } from "./study";
 import { describe, it, expect } from "vitest";
-import { questions, edition } from "./questions";
-describe("2026 level 2 question bank", () => {
+import { questions, edition, difficulties } from "./questions";
+describe("2026 difficulty-grouped question bank", () => {
   it("contains over 50 unique questions in both genres", () => {
     expect(questions.length).toBeGreaterThanOrEqual(50);
     expect(new Set(questions.map((q) => q.id)).size).toBe(questions.length);
@@ -10,8 +12,46 @@ describe("2026 level 2 question bank", () => {
     expect(
       questions.filter((q) => q.kind === "calculation").length,
     ).toBeGreaterThanOrEqual(20);
-    expect(questions.every((q) => q.level === 2)).toBe(true);
+    expect(questions.every((q) => difficulties.includes(q.difficulty))).toBe(
+      true,
+    );
     expect(edition.legalAsOf).toBe("2026-09-01");
+  });
+  it("assigns every question exactly once and matches the three advertised groups", () => {
+    const ids = Object.values(difficultyGroups).flat();
+    expect(new Set(ids).size).toBe(ids.length);
+    expect([...ids].sort()).toEqual(questions.map((q) => q.id).sort());
+    expect(
+      difficulties.map(
+        (difficulty) =>
+          questions.filter((q) => q.difficulty === difficulty).length,
+      ),
+    ).toEqual([32, 32, 24]);
+    expect(questions.find((q) => q.id === "base-1")?.difficulty).toBe(
+      "beginner",
+    );
+    expect(questions.find((q) => q.id === "calc-1")?.difficulty).toBe(
+      "intermediate",
+    );
+    expect(questions.find((q) => q.id === "calc-19")?.difficulty).toBe(
+      "advanced",
+    );
+  });
+  it("combines difficulty, genre, category, and due-date filters", async () => {
+    const now = new Date("2026-11-01T00:00:00Z");
+    const data = await recordReview(
+      emptyData(),
+      "calc-19",
+      true,
+      Rating.Easy,
+      now,
+    );
+    const queue = makeQueue(data, "給与の基礎", now, "calculation", "advanced");
+    expect(queue).toEqual(["calc-16", "recall-12", "recall-13"]);
+    const due = new Date(data.cards["calc-19"].dueAt);
+    expect(
+      makeQueue(data, "給与の基礎", due, "calculation", "advanced")[0],
+    ).toBe("calc-19");
   });
   it("has four distinct answers, explanations, and correct edition scope", () => {
     for (const q of questions) {

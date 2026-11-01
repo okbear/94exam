@@ -1,12 +1,22 @@
-import type { QuestionKind } from "../../../lib/questions";
-export function StudyInfo({ kind }: { kind: QuestionKind }) {
+import {
+  difficultyInfo,
+  type Difficulty,
+  type QuestionKind,
+} from "../../../lib/questions";
+export function StudyInfo({
+  kind,
+  difficulty,
+}: {
+  kind: QuestionKind;
+  difficulty: Difficulty;
+}) {
   return (
     <aside className="study-aside card">
       <h3>出題情報</h3>
-      <dl className="exam-details">
+      <dl className="question-details">
         <div>
-          <dt>対象</dt>
-          <dd>給与計算実務能力検定2級</dd>
+          <dt>難易度</dt>
+          <dd>{difficultyInfo[difficulty].label}</dd>
         </div>
         <div>
           <dt>年度</dt>

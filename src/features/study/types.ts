@@ -1,4 +1,4 @@
-import type { Category, QuestionKind } from "../../lib/questions";
+import type { Category, QuestionKind, Difficulty } from "../../lib/questions";
 export type View = "home" | "library" | "stats" | "settings" | "study";
 export type Genre = QuestionKind | "all";
 export type StartStudy = (category?: Category, questionId?: string) => void;
@@ -7,3 +7,5 @@ export type LibraryFilters = {
   search: string;
   onlyBookmarks: boolean;
 };
+
+export type DifficultyFilter = Difficulty | "all";

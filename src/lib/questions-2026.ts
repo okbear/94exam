@@ -1,3 +1,4 @@
+import { getQuestionDifficulty } from "./difficulty";
 import type { Category, Question } from "./questions";
 const labor = "https://www.mhlw.go.jp/web/t_doc?dataId=73022000&dataType=0";
 const hours =
@@ -43,7 +44,7 @@ function k(
     explanation,
     source,
     kind: "knowledge",
-    level: 2,
+    difficulty: getQuestionDifficulty(id),
   };
 }
 function c(
@@ -70,7 +71,7 @@ function c(
     source,
     materials,
     kind: "calculation",
-    level: 2,
+    difficulty: getQuestionDifficulty(id),
   };
 }
 export const additionalQuestions: Question[] = [

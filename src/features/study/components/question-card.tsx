@@ -1,5 +1,5 @@
 import { ArrowRight, Bookmark, Check, X } from "lucide-react";
-import type { Question } from "../../../lib/questions";
+import { difficultyInfo, type Question } from "../../../lib/questions";
 import type { StudySession } from "../hooks/use-study-session";
 import { Calculator } from "./calculator";
 import { AnswerExplanation } from "./answer-explanation";
@@ -30,7 +30,11 @@ export function QuestionCard({
     <section className="question-card card">
       <div className="question-meta">
         <span className="badge">
-          {q.kind === "calculation" ? "計算問題" : "知識問題"}
+          {q.knowledgeRequired
+            ? "知識＋計算"
+            : q.kind === "calculation"
+              ? "計算問題"
+              : "知識問題"}
         </span>
         <span className="question-category">{q.category}</span>
         <span>
@@ -67,7 +71,8 @@ export function QuestionCard({
       )}
       <div className="question-tools">
         <div className="question-edition">
-          2級 · 2026年度版 · 法令基準 2026.09.01
+          {difficultyInfo[q.difficulty].label} · 2026年度版 · 法令基準
+          2026.09.01
         </div>
         <Calculator />
       </div>

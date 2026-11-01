@@ -1,5 +1,11 @@
+import { isTargetDate, limitReviewToTarget } from "./target-schedule";
 import { DefaultScheduler, Rating } from "ts-fsrs";
-import { questions, type Category, type QuestionKind } from "./questions";
+import {
+  questions,
+  type Category,
+  type QuestionKind,
+  type Difficulty,
+} from "./questions";
 export { Rating };
 export type Grade = 1 | 2 | 3 | 4;
 const schedulerPromise = DefaultScheduler({
@@ -23,20 +29,22 @@ export type Review = {
   grade: Grade;
 };
 export type StudyData = {
-  version: 1;
+  version: 2;
+  targetDate: string | null;
   cards: Record<string, SavedCard>;
   reviews: Review[];
   bookmarks: string[];
   goal: number;
 };
 export const emptyData = (): StudyData => ({
-  version: 1,
+  version: 2,
+  targetDate: null,
   cards: {},
   reviews: [],
   bookmarks: [],
   goal: 10,
 });
-export const storageKey = "kyuyo-study-v1";
+export const storageKey = "kyuyo-study-v2";
 export function dayKey(date = new Date()) {
   return new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Tokyo" }).format(
     date,
@@ -45,7 +53,8 @@ export function dayKey(date = new Date()) {
 export function restoreData(raw: string): StudyData {
   const d = JSON.parse(raw);
   if (
-    d.version !== 1 ||
+    d.version !== 2 ||
+    (d.targetDate !== null && !isTargetDate(d.targetDate)) ||
     !d.cards ||
     typeof d.cards !== "object" ||
     !Array.isArray(d.reviews) ||
@@ -106,7 +115,12 @@ export async function previews(data: StudyData, id: string, now = new Date()) {
     const result = s.review({ card, grade: grade as Grade, now });
     return {
       grade: grade as Grade,
-      card: JSON.parse(JSON.stringify(result.card)) as SavedCard,
+      card: limitReviewToTarget(
+        JSON.parse(JSON.stringify(result.card)) as SavedCard,
+        data.targetDate,
+        grade as Grade,
+        now,
+      ),
     };
   });
 }
@@ -135,12 +149,14 @@ export function makeQueue(
   category?: Category,
   now = new Date(),
   kind?: QuestionKind,
+  difficulty?: Difficulty,
 ) {
   return questions
     .filter(
       (q) =>
         (!category || q.category === category) &&
         (!kind || q.kind === kind) &&
+        (!difficulty || q.difficulty === difficulty) &&
         (!data.cards[q.id] || new Date(data.cards[q.id].dueAt) <= now),
     )
     .sort((a, b) => {
@@ -154,6 +170,11 @@ export function makeQueue(
     .map((q) => q.id);
 }
 export function intervalLabel(due: string, now = new Date()) {
+  const seconds = Math.max(
+    1,
+    Math.round((Date.parse(due) - now.getTime()) / 1000),
+  );
+  if (seconds < 60) return `${seconds}秒後`;
   const mins = Math.max(
     1,
     Math.round((Date.parse(due) - now.getTime()) / 60000),

@@ -1,6 +1,6 @@
 import { BookOpen, Calculator, Sparkles } from "lucide-react";
 import { questions } from "../../../lib/questions";
-import type { Genre } from "../types";
+import type { DifficultyFilter, Genre } from "../types";
 const genres = [
   { id: "all", label: "すべて", icon: Sparkles },
   { id: "knowledge", label: "知識問題", icon: BookOpen },
@@ -10,10 +10,12 @@ export function GenreSelector({
   value,
   onChange,
   showUnit = false,
+  difficulty = "all",
 }: {
   value: Genre;
   onChange: (value: Genre) => void;
   showUnit?: boolean;
+  difficulty?: DifficultyFilter;
 }) {
   return (
     <div className="genre-options">
@@ -28,8 +30,11 @@ export function GenreSelector({
           {genre.label}
           <small>
             {
-              questions.filter((q) => genre.id === "all" || q.kind === genre.id)
-                .length
+              questions.filter(
+                (q) =>
+                  (genre.id === "all" || q.kind === genre.id) &&
+                  (difficulty === "all" || q.difficulty === difficulty),
+              ).length
             }
             {showUnit ? "問" : ""}
           </small>

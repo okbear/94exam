@@ -1,3 +1,5 @@
+import { TargetDateBanner } from "../components/target-date-banner";
+import { DifficultySelector } from "../components/difficulty-selector";
 import {
   CalendarDays,
   GraduationCap,
@@ -11,7 +13,7 @@ import {
 import { questions } from "../../../lib/questions";
 import { makeQueue, type StudyData } from "../../../lib/study";
 import type { StudySummary } from "../../../lib/study-summary";
-import type { Genre, StartStudy, View } from "../types";
+import type { DifficultyFilter, Genre, StartStudy, View } from "../types";
 import { sessionSize } from "../hooks/use-study-session";
 import { GenreSelector } from "../components/genre-selector";
 import { Stat } from "../components/stat";
@@ -20,7 +22,10 @@ import { DailyGoal } from "../components/daily-goal";
 type Props = {
   data: StudyData;
   ready: boolean;
+  setTargetDate: (date: string | null) => void;
   summary: StudySummary;
+  difficulty: DifficultyFilter;
+  setDifficulty: (difficulty: DifficultyFilter) => void;
   kind: Genre;
   setKind: (kind: Genre) => void;
   start: StartStudy;
@@ -30,7 +35,10 @@ type Props = {
 export function HomeScreen({
   data,
   ready,
+  setTargetDate,
   summary,
+  difficulty,
+  setDifficulty,
   kind,
   setKind,
   start,
@@ -42,7 +50,7 @@ export function HomeScreen({
     <>
       <div className="page-heading">
         <div>
-          <h1>給与計算実務能力検定 2級</h1>
+          <h1>給与計算の演習</h1>
           <p>
             2026年度版 ／ 全{questions.length}問 ／ 法令基準日：2026年9月1日
           </p>
@@ -59,12 +67,27 @@ export function HomeScreen({
             : "今日の学習"}
         </div>
       </div>
+      <TargetDateBanner
+        targetDate={data.targetDate}
+        ready={ready}
+        onSave={setTargetDate}
+      />
+      <DifficultySelector
+        value={difficulty}
+        onChange={setDifficulty}
+        kind={kind}
+      />
       <section className="genre-selector" aria-label="問題ジャンル">
         <div>
           <GraduationCap size={18} />
           <span>出題ジャンル</span>
         </div>
-        <GenreSelector value={kind} onChange={setKind} showUnit />
+        <GenreSelector
+          value={kind}
+          onChange={setKind}
+          difficulty={difficulty}
+          showUnit
+        />
       </section>
       <section className="practice-start card" aria-label="演習を開始">
         <div>
@@ -79,6 +102,7 @@ export function HomeScreen({
                 undefined,
                 new Date(),
                 kind === "all" ? undefined : kind,
+                difficulty === "all" ? undefined : difficulty,
               ).length,
             )}
             問
@@ -146,6 +170,7 @@ export function HomeScreen({
       <div className="dashboard-bottom">
         <CategoryList
           data={data}
+          difficulty={difficulty}
           kind={kind}
           start={start}
           onLibrary={() => go("library")}

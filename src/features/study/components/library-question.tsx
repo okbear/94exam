@@ -1,5 +1,5 @@
 import { Bookmark, ArrowRight } from "lucide-react";
-import type { Question } from "../../../lib/questions";
+import { difficultyInfo, type Question } from "../../../lib/questions";
 import { intervalLabel, type SavedCard } from "../../../lib/study";
 export function LibraryQuestion({
   question: q,
@@ -25,7 +25,13 @@ export function LibraryQuestion({
       </button>
       <button className="library-question" onClick={() => onStart()}>
         <small>
-          {q.kind === "calculation" ? "計算" : "知識"} · {q.category}
+          {difficultyInfo[q.difficulty].label} ·{" "}
+          {q.knowledgeRequired
+            ? "知識＋計算"
+            : q.kind === "calculation"
+              ? "計算"
+              : "知識"}{" "}
+          · {q.category}
         </small>
         <b>{q.title}</b>
         <span>{q.prompt}</span>

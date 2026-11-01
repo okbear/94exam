@@ -1,3 +1,6 @@
+import { recallQuestions } from "./questions-recall-2026";
+import { getQuestionDifficulty, type Difficulty } from "./difficulty";
+export { difficulties, difficultyInfo, type Difficulty } from "./difficulty";
 import { additionalQuestions } from "./questions-2026";
 export const categories = [
   "給与の基礎",
@@ -11,7 +14,8 @@ export type Category = (typeof categories)[number];
 export type QuestionKind = "knowledge" | "calculation";
 export type Question = {
   kind: QuestionKind;
-  level: 2;
+  knowledgeRequired?: boolean;
+  difficulty: Difficulty;
   id: string;
   category: Category;
   title: string;
@@ -27,7 +31,7 @@ const labor =
   "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudouseisaku/chushoukigyou/joken_kankyou_rule.html";
 const pension =
   "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20121017.html";
-const initialQuestions: Omit<Question, "kind" | "level">[] = [
+const initialQuestions: Omit<Question, "kind" | "difficulty">[] = [
   {
     id: "base-1",
     category: categories[0],
@@ -203,15 +207,16 @@ export const edition = {
   year: 2026,
   legalAsOf: "2026-09-01",
   checkedAt: "2026-11-01",
-  label: "2026年度版・2級",
-  officialScope: "https://jitsumu-up.jp/about/",
-  officialExam: "https://fos.or.jp/shikaku/pc2/",
+  label: "2026年度版",
+  sourceGuide:
+    "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudouseisaku/chushoukigyou/joken_kankyou_rule.html",
 } as const;
 export const questions: Question[] = [
   ...initialQuestions.map((q) => ({
     ...q,
     kind: (q.formula ? "calculation" : "knowledge") as QuestionKind,
-    level: 2 as const,
+    difficulty: getQuestionDifficulty(q.id),
   })),
   ...additionalQuestions,
+  ...recallQuestions,
 ];

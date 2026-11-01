@@ -8,14 +8,16 @@ import {
 } from "lucide-react";
 import { categories, questions } from "../../../lib/questions";
 import type { StudyData } from "../../../lib/study";
-import type { Genre, StartStudy } from "../types";
+import type { DifficultyFilter, Genre, StartStudy } from "../types";
 export function CategoryList({
   data,
+  difficulty,
   kind,
   start,
   onLibrary,
 }: {
   data: StudyData;
+  difficulty: DifficultyFilter;
   kind: Genre;
   start: StartStudy;
   onLibrary: () => void;
@@ -25,7 +27,7 @@ export function CategoryList({
       <div className="section-heading">
         <div>
           <h3>分野別演習</h3>
-          <p>分野を選ぶと、選択中のジャンルで出題します。</p>
+          <p>分野を選ぶと、選択中の難易度・ジャンルで出題します。</p>
         </div>
         <button className="text-link" onClick={() => onLibrary()}>
           すべての問題 <ArrowUpRight size={15} />
@@ -34,7 +36,10 @@ export function CategoryList({
       <div className="category-grid">
         {categories.map((c, i) => {
           const qs = questions.filter(
-              (q) => q.category === c && (kind === "all" || q.kind === kind),
+              (q) =>
+                q.category === c &&
+                (kind === "all" || q.kind === kind) &&
+                (difficulty === "all" || q.difficulty === difficulty),
             ),
             done = qs.filter((q) => data.cards[q.id]).length;
           return (

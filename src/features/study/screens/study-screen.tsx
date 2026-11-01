@@ -37,7 +37,7 @@ export function StudyScreen({
             bookmarked={data.bookmarks.includes(q.id)}
             onBookmark={() => bookmark(q.id)}
           />
-          <StudyInfo kind={q.kind} />
+          <StudyInfo kind={q.kind} difficulty={q.difficulty} />
         </div>
       )}
     </>

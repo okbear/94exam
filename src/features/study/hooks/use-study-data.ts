@@ -1,3 +1,7 @@
+import {
+  changeTargetDate,
+  reconcileTargetSchedule,
+} from "../../../lib/target-schedule";
 import { useEffect, useState } from "react";
 import {
   dayKey,
@@ -14,7 +18,7 @@ export function useStudyData() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(storageKey);
-      if (raw) setData(restoreData(raw));
+      if (raw) setData(reconcileTargetSchedule(restoreData(raw)));
     } catch {
       setNotice(
         "保存データを読み込めませんでした。設定からバックアップを復元できます。",
@@ -53,7 +57,7 @@ export function useStudyData() {
   async function importData(file?: File) {
     if (!file) return;
     try {
-      const next = restoreData(await file.text());
+      const next = reconcileTargetSchedule(restoreData(await file.text()));
       if (
         window.confirm(
           "現在の履歴を、選択したバックアップの内容に置き換えますか？",
@@ -70,12 +74,33 @@ export function useStudyData() {
     if (
       window.confirm("学習履歴をすべて削除しますか？この操作は取り消せません。")
     ) {
-      setData(emptyData());
+      setData((current) => ({
+        ...emptyData(),
+        goal: current.goal,
+        targetDate: current.targetDate,
+      }));
       setNotice("学習履歴をリセットしました。");
     }
   }
   function setGoal(goal: number) {
     setData((d) => ({ ...d, goal }));
+  }
+  function setTargetDate(targetDate: string | null) {
+    try {
+      const next = changeTargetDate(data, targetDate);
+      setData(next);
+      setNotice(
+        targetDate
+          ? "目標期日を保存し、復習予定を調整しました。"
+          : "目標期日を解除しました。今後の回答は通常の復習間隔で記録します。",
+      );
+    } catch (error) {
+      setNotice(
+        error instanceof Error
+          ? error.message
+          : "目標期日を保存できませんでした。",
+      );
+    }
   }
   return {
     data,
@@ -88,5 +113,6 @@ export function useStudyData() {
     importData,
     reset,
     setGoal,
+    setTargetDate,
   };
 }

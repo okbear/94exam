@@ -1,3 +1,4 @@
+import { questions } from "./questions";
 import { describe, expect, it } from "vitest";
 import {
   emptyData,
@@ -44,8 +45,8 @@ describe("FSRS scheduling and persistence", () => {
     expect(
       makeQueue(data, "社会保険", future).every(
         (id) =>
-          id.startsWith("ins-") ||
-          ["calc-7", "calc-8", "calc-9", "calc-10"].includes(id),
+          questions.find((question) => question.id === id)?.category ===
+          "社会保険",
       ),
     ).toBe(true);
   });

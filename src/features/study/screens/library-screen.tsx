@@ -1,12 +1,20 @@
+import { DifficultySelector } from "../components/difficulty-selector";
 import { Bookmark, Search } from "lucide-react";
 import { categories, questions } from "../../../lib/questions";
 import type { StudyData } from "../../../lib/study";
-import type { Genre, LibraryFilters, StartStudy } from "../types";
+import type {
+  DifficultyFilter,
+  Genre,
+  LibraryFilters,
+  StartStudy,
+} from "../types";
 import { GenreSelector } from "../components/genre-selector";
 import { PageTitle } from "../components/page-title";
 import { LibraryQuestion } from "../components/library-question";
 type Props = {
   data: StudyData;
+  difficulty: DifficultyFilter;
+  setDifficulty: (difficulty: DifficultyFilter) => void;
   kind: Genre;
   setKind: (kind: Genre) => void;
   filters: LibraryFilters;
@@ -16,6 +24,8 @@ type Props = {
 };
 export function LibraryScreen({
   data,
+  difficulty,
+  setDifficulty,
   kind,
   setKind,
   filters,
@@ -28,6 +38,7 @@ export function LibraryScreen({
     (q) =>
       (filter === "all" || q.category === filter) &&
       (kind === "all" || q.kind === kind) &&
+      (difficulty === "all" || q.difficulty === difficulty) &&
       (!onlyBookmarks || data.bookmarks.includes(q.id)) &&
       `${q.title}${q.prompt}${q.category}`.includes(search),
   );
@@ -35,10 +46,19 @@ export function LibraryScreen({
     <>
       <PageTitle
         title="問題ライブラリ"
-        description="ジャンル・分野・キーワードで絞り込めます。"
+        description="難易度・ジャンル・分野・キーワードで絞り込めます。"
+      />
+      <DifficultySelector
+        value={difficulty}
+        onChange={setDifficulty}
+        kind={kind}
       />
       <div className="library-genres">
-        <GenreSelector value={kind} onChange={setKind} />
+        <GenreSelector
+          value={kind}
+          onChange={setKind}
+          difficulty={difficulty}
+        />
         <button
           className={
             onlyBookmarks
@@ -100,7 +120,7 @@ export function LibraryScreen({
         )}
       </div>
       <p className="content-note">
-        2026年度版・2級向けオリジナル問題{questions.length}
+        2026年度版のオリジナル問題{questions.length}
         問。法令基準日：2026年9月1日。各問の解説で根拠と計算条件を確認できます。
       </p>
     </>

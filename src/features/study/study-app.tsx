@@ -3,7 +3,13 @@ import { X } from "lucide-react";
 import { getStudySummary } from "../../lib/study-summary";
 import { useStudyData } from "./hooks/use-study-data";
 import { useStudySession } from "./hooks/use-study-session";
-import type { Genre, LibraryFilters, StartStudy, View } from "./types";
+import type {
+  DifficultyFilter,
+  Genre,
+  LibraryFilters,
+  StartStudy,
+  View,
+} from "./types";
 import { StudyLayout } from "./components/study-layout";
 import { HelpDialog } from "./components/help-dialog";
 import { HomeScreen } from "./screens/home-screen";
@@ -17,6 +23,7 @@ export function StudyApp() {
   const session = useStudySession(store.data, store.setData, store.setNotice);
   const [view, setView] = useState<View>("home");
   const [help, setHelp] = useState(false);
+  const [difficulty, setDifficulty] = useState<DifficultyFilter>("all");
   const [kind, setKind] = useState<Genre>("all");
   const [filters, setFilters] = useState<LibraryFilters>({
     category: "all",
@@ -35,7 +42,12 @@ export function StudyApp() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   const start: StartStudy = (category, questionId) => {
-    session.start(kind, category, questionId);
+    session.start(
+      kind,
+      category,
+      questionId,
+      difficulty === "all" ? undefined : difficulty,
+    );
     go("study");
   };
   return (
@@ -57,7 +69,10 @@ export function StudyApp() {
         <HomeScreen
           data={store.data}
           ready={store.ready}
+          setTargetDate={store.setTargetDate}
           summary={summary}
+          difficulty={difficulty}
+          setDifficulty={setDifficulty}
           kind={kind}
           setKind={setKind}
           start={start}
@@ -76,6 +91,8 @@ export function StudyApp() {
       {view === "library" && (
         <LibraryScreen
           data={store.data}
+          difficulty={difficulty}
+          setDifficulty={setDifficulty}
           kind={kind}
           setKind={setKind}
           filters={filters}
@@ -90,6 +107,8 @@ export function StudyApp() {
       {view === "settings" && (
         <SettingsScreen
           goal={store.data.goal}
+          targetDate={store.data.targetDate}
+          setTargetDate={store.setTargetDate}
           setGoal={store.setGoal}
           exportData={store.exportData}
           importData={store.importData}

@@ -13,11 +13,11 @@ export const Route = createRootRoute({
         name: "viewport",
         content: "width=device-width, initial-scale=1, viewport-fit=cover",
       },
-      { title: "給与の学び舎 | 2026年度版・給与計算実務能力検定2級" },
+      { title: "給与の学び舎 | 2026年度版・給与計算の演習" },
       {
         name: "description",
         content:
-          "忘れる前に、もう一度。給与計算実務能力検定の学習をFSRSによる復習でサポート。",
+          "給与計算の知識と計算を初級・中級・上級の難易度別に学習。FSRSによる復習に対応。",
       },
     ],
     links: [
