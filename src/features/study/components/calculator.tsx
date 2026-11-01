@@ -46,10 +46,18 @@ export function Calculator() {
   );
   const panelId = useId();
   const trigger = useRef<HTMLButtonElement>(null);
+  const history = useRef<HTMLDivElement>(null);
   const display = useRef<HTMLOutputElement>(null);
   useEffect(() => {
     if (open) display.current?.focus({ preventScroll: true });
   }, [open]);
+  useEffect(() => {
+    if (!open) return;
+    if (display.current)
+      display.current.scrollLeft = display.current.scrollWidth;
+    if (history.current)
+      history.current.scrollLeft = history.current.scrollWidth;
+  }, [open, state.expression, state.previousExpression, state.error]);
   function close() {
     setOpen(false);
     trigger.current?.focus({ preventScroll: true });
@@ -96,7 +104,7 @@ export function Calculator() {
       {open && (
         <CalculatorPopup id={panelId} onClose={close} onKeyDown={handleKey}>
           <div className="calculator-display">
-            <div className="calculator-history">
+            <div ref={history} className="calculator-history">
               {state.previousExpression
                 ? `${displayExpression(state.previousExpression)} =`
                 : "\u00a0"}
