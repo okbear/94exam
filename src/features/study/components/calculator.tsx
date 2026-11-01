@@ -12,7 +12,6 @@ import {
   Copy,
   Delete,
   Percent,
-  RotateCcw,
   SquareArrowOutUpRight,
 } from "lucide-react";
 import { CalculatorPopup } from "./calculator-popup";
@@ -47,7 +46,7 @@ const displayExpression = (value: string) =>
     .replaceAll("-", " − ");
 export function Calculator({ resetKey }: { resetKey?: string }) {
   const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copiedFor, setCopiedFor] = useState<string | null>(null);
   const [state, dispatch] = useReducer(
     calculatorReducer,
     undefined,
@@ -56,9 +55,10 @@ export function Calculator({ resetKey }: { resetKey?: string }) {
   const [prevKey, setPrevKey] = useState(resetKey);
   if (prevKey !== resetKey) {
     setPrevKey(resetKey);
-    setCopied(false);
     dispatch({ type: "clear" });
   }
+  const currentCopyKey = `${resetKey ?? ""}:${state.expression}`;
+  const copied = !state.error && copiedFor === currentCopyKey;
   const panelId = useId();
   const trigger = useRef<HTMLButtonElement>(null);
   const history = useRef<HTMLDivElement>(null);
@@ -67,7 +67,6 @@ export function Calculator({ resetKey }: { resetKey?: string }) {
     if (open) display.current?.focus({ preventScroll: true });
   }, [open]);
   useEffect(() => {
-    setCopied(false);
     if (!open) return;
     if (display.current)
       display.current.scrollLeft = display.current.scrollWidth;
@@ -76,21 +75,17 @@ export function Calculator({ resetKey }: { resetKey?: string }) {
   }, [open, state.expression, state.previousExpression, state.error]);
   function close() {
     setOpen(false);
+    setCopiedFor(null);
     trigger.current?.focus({ preventScroll: true });
   }
   async function copyResult() {
-    if (state.error) return;
-    let value = state.expression;
+    if (state.error || !navigator.clipboard?.writeText) return;
     try {
-      value = calculate(state.expression);
+      const value = calculate(state.expression);
+      await navigator.clipboard.writeText(value);
+      setCopiedFor(currentCopyKey);
     } catch {
-      // Keep raw expression if incomplete.
-    }
-    try {
-      await navigator.clipboard?.writeText(value);
-      setCopied(true);
-    } catch {
-      // Ignore if clipboard API is unavailable.
+      // Ignore if expression is incomplete or clipboard API is unavailable.
     }
   }
   function handleKey(event: KeyboardEvent<HTMLElement>) {
@@ -154,9 +149,10 @@ export function Calculator({ resetKey }: { resetKey?: string }) {
               type="button"
               aria-label="クリア"
               title="クリア"
+              className="calculator-clear"
               onClick={() => dispatch({ type: "clear" })}
             >
-              <RotateCcw size={16} />
+              C
             </button>
             <button
               type="button"

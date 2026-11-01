@@ -6,8 +6,10 @@ import {
   type RefObject,
 } from "react";
 type Position = { left: number; top: number };
+let nextZIndex = 40;
 export function useCalculatorPosition(panel: RefObject<HTMLElement | null>) {
   const [position, setPosition] = useState<Position | null>(null);
+  const [zIndex, setZIndex] = useState(() => ++nextZIndex);
   const drag = useRef<{
     pointerId: number;
     x: number;
@@ -15,23 +17,18 @@ export function useCalculatorPosition(panel: RefObject<HTMLElement | null>) {
     left: number;
     top: number;
   } | null>(null);
-  function clamp(left: number, top: number): Position {
+  function clamp(left: number, top: number): Position | null {
     const rect = panel.current?.getBoundingClientRect();
+    if (!rect || (rect.width === 0 && rect.height === 0)) return null;
     return {
-      left: Math.max(
-        8,
-        Math.min(left, window.innerWidth - (rect?.width ?? 0) - 8),
-      ),
-      top: Math.max(
-        8,
-        Math.min(top, window.innerHeight - (rect?.height ?? 0) - 8),
-      ),
+      left: Math.max(8, Math.min(left, window.innerWidth - rect.width - 8)),
+      top: Math.max(8, Math.min(top, window.innerHeight - rect.height - 8)),
     };
   }
   useEffect(() => {
     const resize = () =>
       setPosition((current) =>
-        current ? clamp(current.left, current.top) : null,
+        current ? (clamp(current.left, current.top) ?? current) : null,
       );
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
@@ -53,20 +50,24 @@ export function useCalculatorPosition(panel: RefObject<HTMLElement | null>) {
   function onPointerMove(event: PointerEvent<HTMLElement>) {
     const start = drag.current;
     if (!start || start.pointerId !== event.pointerId) return;
-    setPosition(
-      clamp(
-        start.left + event.clientX - start.x,
-        start.top + event.clientY - start.y,
-      ),
+    const next = clamp(
+      start.left + event.clientX - start.x,
+      start.top + event.clientY - start.y,
     );
+    if (next) setPosition(next);
   }
   function stopDrag() {
     drag.current = null;
   }
   return {
-    style: position
-      ? { ...position, right: "auto", bottom: "auto" }
-      : undefined,
+    style: {
+      zIndex,
+      ...(position
+        ? { ...position, right: "auto", bottom: "auto" }
+        : undefined),
+    },
+    bringToFront: () =>
+      setZIndex((current) => (current === nextZIndex ? current : ++nextZIndex)),
     dragHandlers: {
       onPointerDown,
       onPointerMove,

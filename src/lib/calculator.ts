@@ -36,7 +36,7 @@ export function calculate(expression: string): string {
     if (!token || !/^\d*\.?\d+$|^\d+\.$/.test(token))
       throw new Error("式を確認してください");
     let value = Number(token);
-    while (tokens![position] === "%") {
+    if (tokens![position] === "%") {
       position++;
       value /= 100;
     }
@@ -106,8 +106,8 @@ export function calculatorReducer(
       : state.expression;
   if (expression.length >= 100) return state;
   if (input === "%") {
-    if (!/\d$/.test(expression)) return state;
-    expression += "%";
+    if (!/[\d.]$/.test(expression)) return state;
+    expression = `${expression.replace(/\.$/, "")}%`;
   } else if (operator) {
     if (/[+\-*/]$/.test(expression))
       expression =

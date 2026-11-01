@@ -5,15 +5,8 @@ import {
   useState,
   type KeyboardEvent,
 } from "react";
-import { createPortal } from "react-dom";
-import {
-  Eraser,
-  GripHorizontal,
-  NotebookPen,
-  SquareArrowOutUpRight,
-  X,
-} from "lucide-react";
-import { useCalculatorPosition } from "../hooks/use-calculator-position";
+import { Eraser, NotebookPen, SquareArrowOutUpRight } from "lucide-react";
+import { CalculatorPopup } from "./calculator-popup";
 
 export function Memo({ resetKey }: { resetKey?: string }) {
   const [open, setOpen] = useState(false);
@@ -25,10 +18,7 @@ export function Memo({ resetKey }: { resetKey?: string }) {
   }
   const panelId = useId();
   const trigger = useRef<HTMLButtonElement>(null);
-  const panel = useRef<HTMLElement>(null);
   const textarea = useRef<HTMLTextAreaElement>(null);
-  const { style, dragHandlers } = useCalculatorPosition(panel);
-
   useEffect(() => {
     if (open) textarea.current?.focus({ preventScroll: true });
   }, [open]);
@@ -61,60 +51,42 @@ export function Memo({ resetKey }: { resetKey?: string }) {
         <span>メモ</span>
         <SquareArrowOutUpRight size={13} aria-hidden="true" />
       </button>
-      {open &&
-        createPortal(
-          <section
-            ref={panel}
-            id={panelId}
-            role="dialog"
-            aria-modal="false"
+      {open && (
+        <CalculatorPopup
+          id={panelId}
+          title="メモ"
+          ariaLabel="途中計算・メモ"
+          closeLabel="メモを閉じる"
+          icon={<NotebookPen size={16} />}
+          className="memo-popup"
+          panelClassName="memo-panel"
+          onClose={close}
+          onKeyDown={handleKeyDown}
+        >
+          <textarea
+            ref={textarea}
             aria-label="途中計算・メモ"
-            className="calculator-popup memo-popup"
-            style={style}
-            onKeyDown={handleKeyDown}
-          >
-            <header className="calculator-popup-header" {...dragHandlers}>
-              <NotebookPen size={16} />
-              <strong>メモ</strong>
-              <span className="calculator-drag-hint">
-                <GripHorizontal size={17} />
-                移動
-              </span>
-              <button
-                type="button"
-                aria-label="メモを閉じる"
-                onClick={close}
-              >
-                <X size={20} />
-              </button>
-            </header>
-            <div className="memo-panel">
-              <textarea
-                ref={textarea}
-                aria-label="途中計算・メモ"
-                placeholder="途中計算やメモを自由に入力できます"
-                rows={5}
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-              />
-              <div className="memo-tools">
-                <button
-                  type="button"
-                  className="question-memo-clear"
-                  disabled={!text}
-                  onClick={() => {
-                    setText("");
-                    textarea.current?.focus({ preventScroll: true });
-                  }}
-                >
-                  <Eraser size={14} />
-                  クリア
-                </button>
-              </div>
-            </div>
-          </section>,
-          document.body,
-        )}
+            placeholder="途中計算やメモを自由に入力できます"
+            rows={5}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <div className="memo-tools">
+            <button
+              type="button"
+              className="memo-clear question-memo-clear"
+              disabled={!text}
+              onClick={() => {
+                setText("");
+                textarea.current?.focus({ preventScroll: true });
+              }}
+            >
+              <Eraser size={14} />
+              クリア
+            </button>
+          </div>
+        </CalculatorPopup>
+      )}
     </div>
   );
 }

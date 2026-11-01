@@ -66,10 +66,44 @@ assert.equal(
   await page.getByLabel("電卓の表示").textContent(),
   "0では割れません",
 );
+assert.equal(
+  (
+    await calculator
+      .getByRole("button", { name: "クリア", exact: true })
+      .textContent()
+  ).trim(),
+  "C",
+);
+await calculatorKeys(["クリア", "1", "足す"]);
+const copyButton = calculator.getByRole("button", {
+  name: "コピー",
+  exact: true,
+});
+await copyButton.click();
+assert.equal(await copyButton.getAttribute("title"), "コピー");
 await calculatorKeys(["クリア"]);
-await calculatorKeys(["3", "0", "0", "0", "0", "0", "掛ける", "9", "小数点", "8", "5", "パーセント", "割る", "2", "計算する"]);
+await calculatorKeys([
+  "3",
+  "0",
+  "0",
+  "0",
+  "0",
+  "0",
+  "掛ける",
+  "9",
+  "小数点",
+  "8",
+  "5",
+  "パーセント",
+  "割る",
+  "2",
+  "計算する",
+]);
 assert.equal(await page.getByLabel("電卓の表示").textContent(), "14775");
-await calculator.getByRole("button", { name: "コピー", exact: true }).click();
+await copyButton.click();
+await calculator
+  .locator('button[aria-label="コピー"][title="コピーしました"]')
+  .waitFor();
 await calculatorKeys(["クリア"]);
 await page.getByLabel("電卓の表示").focus();
 await page.keyboard.type("2+3*4");
@@ -142,9 +176,33 @@ assert.ok(
 );
 await calculatorToggle.click();
 await page.setViewportSize({ width: 1440, height: 1100 });
+await calculatorToggle.click();
 await page.getByRole("button", { name: "メモを開く" }).click();
 const memoDialog = page.getByRole("dialog", { name: "途中計算・メモ" });
+const calcDesktopBox = await calculator.boundingBox();
+const memoDesktopBox = await memoDialog.boundingBox();
+assert.ok(
+  memoDesktopBox.x + memoDesktopBox.width <= calcDesktopBox.x,
+  "Memo and calculator should not overlap on desktop",
+);
+const zIndexOf = (locator) =>
+  locator.evaluate((el) => Number(getComputedStyle(el).zIndex));
+assert.ok(
+  (await zIndexOf(memoDialog)) > (await zIndexOf(calculator)),
+  "Newly opened memo should be in front of calculator",
+);
+await calculator.getByLabel("電卓の表示").click();
+assert.ok(
+  (await zIndexOf(calculator)) > (await zIndexOf(memoDialog)),
+  "Clicking calculator should bring it to front",
+);
 const memoInput = memoDialog.getByLabel("途中計算・メモ");
+await memoInput.click();
+assert.ok(
+  (await zIndexOf(memoDialog)) > (await zIndexOf(calculator)),
+  "Clicking memo should bring it back to front",
+);
+await calculatorToggle.click();
 await memoInput.fill("250000 + 20000 = 270000");
 assert.equal(await memoInput.inputValue(), "250000 + 20000 = 270000");
 await memoDialog.locator(".question-memo-clear").click();

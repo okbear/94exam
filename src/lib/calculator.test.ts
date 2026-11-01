@@ -19,6 +19,8 @@ describe("four-operation calculator", () => {
     expect(calculate("25%")).toBe("0.25");
     expect(calculate("300000*9.85%/2")).toBe("14775");
     expect(enter("300000*18.3%/2=").expression).toBe("27450");
+    expect(enter("10.%=").expression).toBe("0.1");
+    expect(enter("25%%").expression).toBe("25%");
   });
   it("avoids decimal artifacts and keeps small results usable in another calculation", () => {
     expect(calculate("0.1+0.2")).toBe("0.3");
@@ -33,6 +35,7 @@ describe("four-operation calculator", () => {
       "0/0",
       "1;alert(1)",
       "2**3",
+      "25%%",
       "999999999999999*2",
     ])
       expect(() => calculate(expression)).toThrow();
