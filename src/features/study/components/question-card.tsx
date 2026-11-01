@@ -1,6 +1,7 @@
 import { ArrowRight, Bookmark, Check, X } from "lucide-react";
 import type { Question } from "../../../lib/questions";
 import type { StudySession } from "../hooks/use-study-session";
+import { Calculator } from "./calculator";
 import { AnswerExplanation } from "./answer-explanation";
 export function QuestionCard({
   question: q,
@@ -64,8 +65,11 @@ export function QuestionCard({
           </tbody>
         </table>
       )}
-      <div className="question-edition">
-        2級 · 2026年度版 · 法令基準 2026.09.01
+      <div className="question-tools">
+        <div className="question-edition">
+          2級 · 2026年度版 · 法令基準 2026.09.01
+        </div>
+        <Calculator />
       </div>
       <div className="answers">
         {q.choices.map((choice, i) => (

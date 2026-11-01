@@ -11,6 +11,126 @@ await page.screenshot({
 });
 await page.getByRole("button", { name: "計算問題" }).first().click();
 await page.getByRole("button", { name: "演習を開始" }).click();
+const calculatorToggle = page.locator(".calculator-toggle");
+assert.equal(await calculatorToggle.getAttribute("aria-expanded"), "false");
+const tools = page.locator(".question-tools");
+assert.ok(await tools.locator(".question-edition").isVisible());
+assert.equal(await calculatorToggle.getAttribute("aria-haspopup"), "dialog");
+
+assert.equal(
+  await page.getByRole("dialog", { name: "四則演算の電卓" }).count(),
+  0,
+);
+await calculatorToggle.click();
+const calculator = page.getByRole("dialog", { name: "四則演算の電卓" });
+async function calculatorKeys(values) {
+  for (const value of values)
+    await calculator.getByRole("button", { name: value, exact: true }).click();
+}
+await calculatorKeys([
+  "2",
+  "5",
+  "0",
+  "0",
+  "0",
+  "0",
+  "足す",
+  "2",
+  "0",
+  "0",
+  "0",
+  "0",
+  "足す",
+  "1",
+  "0",
+  "0",
+  "0",
+  "0",
+  "引く",
+  "5",
+  "5",
+  "0",
+  "0",
+  "0",
+  "計算する",
+]);
+assert.equal(await page.getByLabel("電卓の表示").textContent(), "225000");
+await calculatorToggle.click();
+assert.equal(await calculator.count(), 0);
+await calculatorToggle.click();
+assert.equal(await page.getByLabel("電卓の表示").textContent(), "225000");
+await calculatorKeys(["クリア", "1", "割る", "0", "計算する"]);
+assert.equal(
+  await page.getByLabel("電卓の表示").textContent(),
+  "0では割れません",
+);
+await calculatorKeys(["クリア"]);
+await page.getByLabel("電卓の表示").focus();
+await page.keyboard.type("2+3*4");
+await page.keyboard.press("Enter");
+assert.equal(await page.getByLabel("電卓の表示").textContent(), "14");
+await page.setViewportSize({ width: 390, height: 844 });
+assert.ok(
+  (
+    await calculator
+      .getByRole("button", { name: "7", exact: true })
+      .boundingBox()
+  ).height >= 48,
+);
+assert.ok(
+  await page.evaluate(
+    () => document.documentElement.scrollWidth <= window.innerWidth,
+  ),
+);
+await page
+  .locator(".question-prompt")
+  .evaluate((element) => element.scrollIntoView({ block: "start" }));
+const calculatorBox = await calculator.boundingBox();
+assert.ok(calculatorBox.width <= 320, "Calculator should have compact width");
+const triggerBox = await calculatorToggle.boundingBox();
+const toolsBox = await tools.boundingBox();
+assert.ok(
+  Math.abs(triggerBox.x + triggerBox.width - toolsBox.x - toolsBox.width) < 2,
+  "Calculator trigger should align to the right",
+);
+const promptBox = await page.locator(".question-prompt").boundingBox();
+assert.ok(
+  promptBox.y >= 0 && promptBox.y + promptBox.height <= calculatorBox.y,
+  "Problem should be readable above popup",
+);
+assert.ok(
+  calculatorBox.y + calculatorBox.height <= 844,
+  "Popup must fit viewport",
+);
+await page.screenshot({
+  path: "/private/tmp/94exam-mobile-calculator.png",
+  fullPage: false,
+});
+await calculator.getByRole("button", { name: "電卓を閉じる" }).click();
+assert.equal(await calculator.count(), 0);
+assert.ok(
+  await calculatorToggle.evaluate(
+    (element) => element === document.activeElement,
+  ),
+);
+await calculatorToggle.click();
+await page.keyboard.press("Escape");
+assert.equal(await calculator.count(), 0);
+await page.setViewportSize({ width: 1440, height: 1100 });
+await calculatorToggle.click();
+const beforeDrag = await calculator.boundingBox();
+const dragHandle = await page.locator(".calculator-popup-header").boundingBox();
+await page.mouse.move(dragHandle.x + 55, dragHandle.y + 20);
+await page.mouse.down();
+await page.mouse.move(dragHandle.x - 80, dragHandle.y - 100, { steps: 5 });
+await page.mouse.up();
+const afterDrag = await calculator.boundingBox();
+assert.ok(
+  afterDrag.x < beforeDrag.x && afterDrag.y < beforeDrag.y,
+  "Popup can be moved by its header",
+);
+await calculatorToggle.click();
+await page.setViewportSize({ width: 1440, height: 1100 });
 await page.getByRole("button", { name: /225,000円/ }).click();
 await page.getByRole("button", { name: "答えを確認する" }).click();
 await page.getByRole("heading", { name: "正解", exact: true }).waitFor();
@@ -115,13 +235,11 @@ assert.equal(
   ),
   0,
 );
-await page
-  .locator("input[type=file]")
-  .setInputFiles({
-    name: "backup.json",
-    mimeType: "application/json",
-    buffer: Buffer.from(backup),
-  });
+await page.locator("input[type=file]").setInputFiles({
+  name: "backup.json",
+  mimeType: "application/json",
+  buffer: Buffer.from(backup),
+});
 await page.getByText("学習データを復元しました。", { exact: true }).waitFor();
 assert.equal(
   await page.evaluate(
