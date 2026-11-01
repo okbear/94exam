@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import {
   createRootRoute,
   HeadContent,
@@ -32,6 +33,7 @@ export const Route = createRootRoute({
       </head>
       <body>
         <Outlet />
+        <Analytics mode={import.meta.env.DEV ? "development" : "production"} />
         <Scripts />
       </body>
     </html>
