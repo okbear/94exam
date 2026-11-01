@@ -79,9 +79,9 @@ npm run deploy
 - `src/features/study/hooks/use-study-session.ts` — 出題・解答選択・理解度評価・次問への遷移
 - `src/lib/study-summary.ts` — 回答履歴を日本時間の日付で集計する純粋関数
 - `src/lib/study.ts` — FSRS・出題キュー・永続化データ
-- `src/lib/questions.ts` — 問題型・年度情報・問題集の統合
-- `src/lib/questions-2026.ts` — 2026年度の知識・計算問題と根拠リンク
-- `src/styles.css` — レスポンシブUI
+- `src/data/` — 2026年度の問題データ・難易度区分・年度メタデータ（JSON）
+- `src/lib/questions.ts` — 問題型・データ検証パーサー・問題集の読み込み
+- `src/styles.css`, `src/styles/` — セクション分割されたレスポンシブCSS
 
 画面コンポーネントはpropsでデータと操作を受け取ります。履歴の保存処理と演習中の一時状態は別のフックで管理し、画面の切り替えで検索条件や演習状態が失われないよう、フックは `StudyApp` に置いています。
 

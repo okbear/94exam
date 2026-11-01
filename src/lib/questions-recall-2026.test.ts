@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { recallQuestions } from "./questions-recall-2026";
-import { questions } from "./questions";
+import { questions, recallQuestions } from "./questions";
 describe("knowledge-applied calculation questions", () => {
   it("adds 24 questions without removing any of the original 64", () => {
     expect(questions).toHaveLength(88);

@@ -6,6 +6,8 @@ import {
   edition,
   difficulties,
   parseNumericAnswer,
+  parseQuestion,
+  parseQuestionBank,
 } from "./questions";
 describe("2026 difficulty-grouped question bank", () => {
   it("contains over 50 unique questions in both genres", () => {
@@ -80,6 +82,17 @@ describe("2026 difficulty-grouped question bank", () => {
     expect(parseNumericAnswer("２２５，０００")).toBe(225000);
     expect(parseNumericAnswer("")).toBeNull();
     expect(parseNumericAnswer("abc")).toBeNull();
+    expect(() => parseQuestion(null)).toThrow();
+    expect(() => parseQuestion({ id: "bad" })).toThrow();
+    expect(() =>
+      parseQuestion({ ...questions[0], difficulty: "invalid" }),
+    ).toThrow();
+    expect(() =>
+      parseQuestion({ ...questions[0], source: "http://insecure.example.com" }),
+    ).toThrow();
+    expect(() =>
+      parseQuestionBank([questions[0], { ...questions[0] }]),
+    ).toThrow();
   });
   it("independently checks multi-step and 2026 calculation answers", () => {
     const computed: Record<string, number> = {

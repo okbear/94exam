@@ -1,0 +1,994 @@
+[
+  {
+    "id": "base-1",
+    "category": "給与の基礎",
+    "title": "給与明細の基本",
+    "prompt": "基本給250,000円、役職手当20,000円、通勤手当10,000円。控除合計が55,000円のとき、差引支給額はいくらですか。",
+    "answer": 225000,
+    "explanation": "支給項目をすべて足した総支給額から、控除合計を差し引きます。非課税扱いの手当も、実際に支払う支給額には含めます。",
+    "formula": "280,000 − 55,000 = 225,000円",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "base-2",
+    "category": "給与の基礎",
+    "title": "賃金支払いの原則",
+    "prompt": "賃金支払いの5原則に含まれないものはどれですか。",
+    "choices": [
+      "通貨払い",
+      "直接払い",
+      "全額払い",
+      "毎週払い"
+    ],
+    "answer": 3,
+    "explanation": "5原則は、通貨払い・直接払い・全額払い・毎月1回以上払い・一定期日払いです。毎週払いであることは原則の要件ではありません。",
+    "source": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudouseisaku/chushoukigyou/joken_kankyou_rule.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "base-3",
+    "category": "給与の基礎",
+    "title": "欠勤控除の計算",
+    "prompt": "この設問では、欠勤1日あたりの控除額を「月額基本給÷月の所定労働日数」とします。基本給240,000円、所定20日、欠勤2日の控除額は？",
+    "answer": 24000,
+    "explanation": "まず1日あたり12,000円を算出し、欠勤日数の2日を掛けます。欠勤控除の方法は実際には就業規則等によって異なります。",
+    "formula": "240,000 ÷ 20 × 2 = 24,000円",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "base-4",
+    "category": "給与の基礎",
+    "title": "総支給額の計算",
+    "prompt": "基本給220,000円、資格手当15,000円、時間外手当18,000円、通勤手当8,000円の場合、総支給額は？",
+    "answer": 261000,
+    "explanation": "総支給額は控除前のすべての支給項目の合計です。",
+    "formula": "220,000 + 15,000 + 18,000 + 8,000 = 261,000円",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "time-1",
+    "category": "労働時間・割増賃金",
+    "title": "時間外手当の計算",
+    "prompt": "1時間あたりの基礎賃金が1,600円。割増率を25%とする時間外労働を10時間したとき、時間外手当はいくらですか。",
+    "answer": 20000,
+    "explanation": "通常の賃金100%に割増分25%を加えた125%を掛けます。割増分だけの4,000円ではなく、時間外手当全体を求めます。",
+    "formula": "1,600 × 1.25 × 10 = 20,000円",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "time-2",
+    "category": "労働時間・割増賃金",
+    "title": "深夜労働の計算",
+    "prompt": "基礎時給1,400円。通常勤務時間内に深夜労働を4時間行いました。深夜割増率を25%とすると、通常賃金に加算する割増分のみはいくらですか。",
+    "answer": 1400,
+    "explanation": "この問題は割増分のみを尋ねています。通常賃金分を含む1.25ではなく0.25を掛けます。",
+    "formula": "1,400 × 0.25 × 4 = 1,400円",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "time-3",
+    "category": "労働時間・割増賃金",
+    "title": "休日労働の計算",
+    "prompt": "基礎時給2,000円、法定休日労働5時間。割増率を35%とすると、休日労働分の賃金総額はいくらですか。",
+    "answer": 13500,
+    "explanation": "設問で指定した割増率35%を使い、通常の賃金の135%を計算します。",
+    "formula": "2,000 × 1.35 × 5 = 13,500円",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "time-4",
+    "category": "労働時間・割増賃金",
+    "title": "基礎時給の計算",
+    "prompt": "割増賃金の計算基礎となる月額賃金が256,000円、月平均所定労働時間が160時間。この設問の基礎時給は？",
+    "answer": 1600,
+    "explanation": "月給制の基礎時給は、この設問では計算基礎となる月額賃金を月平均所定労働時間で割ります。",
+    "formula": "256,000 ÷ 160 = 1,600円",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "ins-1",
+    "category": "社会保険",
+    "title": "保険料の計算",
+    "prompt": "2026年9月分の協会けんぽ東京支部の健康保険料率（医療分）は労使合計9.85%、労使折半です。介護保険料・支援金を含めず、標準報酬月額300,000円の場合、本人負担額は？",
+    "answer": 14775,
+    "explanation": "2026年度の東京支部の医療分料率9.85%で計算します。介護保険料と子ども・子育て支援金はこの設問では計算しません。健康保険の料率は都道府県・保険者で異なります。",
+    "formula": "300,000 × 9.85% ÷ 2 = 14,775円",
+    "source": "https://www.kyoukaikenpo.or.jp/~/media/Files/shared/hokenryouritu/r8/ippan/R8_13tokyo.pdf",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "ins-2",
+    "category": "社会保険",
+    "title": "定時決定の対象月",
+    "prompt": "標準報酬月額の定時決定では、原則として何月から何月までに支払われた報酬を用いますか。",
+    "choices": [
+      "1月〜3月",
+      "4月〜6月",
+      "7月〜9月",
+      "10月〜12月"
+    ],
+    "answer": 1,
+    "explanation": "原則として4月・5月・6月に支払われた報酬をもとに決定します。支払基礎日数などの要件や例外もあります。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20121017.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "ins-3",
+    "category": "社会保険",
+    "title": "定時決定の適用時期",
+    "prompt": "定時決定で決まった標準報酬月額は、原則として何月から適用されますか。",
+    "choices": [
+      "4月",
+      "7月",
+      "9月",
+      "翌年1月"
+    ],
+    "answer": 2,
+    "explanation": "定時決定された標準報酬月額は、原則としてその年の9月から翌年8月まで適用されます。随時改定などに該当する場合は途中で変わります。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20121017.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "ins-4",
+    "category": "社会保険",
+    "title": "雇用保険料の計算",
+    "prompt": "2026年度・一般の事業の雇用保険の本人負担率は0.5%です。対象賃金280,000円の本人負担額は？",
+    "answer": 1400,
+    "explanation": "百分率を小数に直すと0.005です。2026年度の一般の事業の労働者負担率は5/1,000です。事業の種類や年度が変われば率を再確認します。",
+    "formula": "280,000 × 0.005 = 1,400円",
+    "source": "https://www.mhlw.go.jp/stf/newpage_71570.html",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "tax-1",
+    "category": "税金・控除",
+    "title": "課税対象額の計算",
+    "prompt": "この設問では、総支給額300,000円のうち非課税通勤手当10,000円、社会保険料等控除額43,000円とします。社会保険料等控除後の給与等の金額は？",
+    "answer": 247000,
+    "explanation": "総支給額から、設問で非課税とした通勤手当と社会保険料等を差し引きます。実際の源泉徴収税額は該当する税額表で確認します。",
+    "formula": "300,000 − 10,000 − 43,000 = 247,000円",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "tax-3",
+    "category": "税金・控除",
+    "title": "控除合計の計算",
+    "prompt": "健康保険料15,000円、厚生年金保険料27,450円、雇用保険料1,500円、所得税6,000円、住民税12,000円。控除合計は？",
+    "answer": 61950,
+    "explanation": "提示されたすべての控除額を合計します。ここで使う金額は練習用の数値です。",
+    "formula": "15,000 + 27,450 + 1,500 + 6,000 + 12,000 = 61,950円",
+    "kind": "calculation",
+    "unit": "円",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "law-1",
+    "category": "労働法令",
+    "title": "法定労働時間",
+    "prompt": "変形労働時間制や特例措置等を適用しない場合、法定労働時間の原則はどれですか。",
+    "choices": [
+      "1日7時間・週35時間",
+      "1日8時間・週40時間",
+      "1日9時間・週45時間",
+      "1日8時間・週48時間"
+    ],
+    "answer": 1,
+    "explanation": "労働基準法第32条の原則は、休憩を除いて1日8時間・1週40時間です。会社が定める所定労働時間との違いを押さえましょう。",
+    "source": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/roudouzikan/index.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "law-2",
+    "category": "労働法令",
+    "title": "休憩時間の境界",
+    "prompt": "実労働時間がちょうど8時間の日に、法律上必要な休憩時間の最低限はどれですか。",
+    "choices": [
+      "30分",
+      "45分",
+      "60分",
+      "90分"
+    ],
+    "answer": 1,
+    "explanation": "6時間を超えると45分以上、8時間を超えると1時間以上です。ちょうど8時間の場合は「8時間を超える」には当たりません。",
+    "source": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/roudouzikan/index.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "law-3",
+    "category": "労働法令",
+    "title": "休日の原則",
+    "prompt": "労働基準法上の休日付与の原則として正しいものはどれですか。",
+    "choices": [
+      "毎週少なくとも1日、または4週間を通じ4日以上",
+      "必ず土曜日と日曜日の2日",
+      "毎月必ず10日以上",
+      "毎年合計52日あれば配置は自由"
+    ],
+    "answer": 0,
+    "explanation": "第35条では毎週少なくとも1回の休日を原則とし、4週間を通じ4日以上の休日を与える方法も認めています。法定休日と会社独自の休日を区別します。",
+    "source": "https://www.mhlw.go.jp/web/t_doc?dataId=73022000&dataType=0",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "law-4",
+    "category": "労働法令",
+    "title": "年次有給休暇の初回付与",
+    "prompt": "通常の週5日勤務の労働者が、入社から6か月継続勤務し全労働日の8割以上出勤しました。初回の法定年休日数は？",
+    "choices": [
+      "5日",
+      "7日",
+      "10日",
+      "20日"
+    ],
+    "answer": 2,
+    "explanation": "通常の週5日勤務では、この要件を満たすと10日の年休が付与されます。週所定労働日数等が少ない人には比例付与があります。",
+    "source": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/roudouzikan/index.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "law-5",
+    "category": "労働法令",
+    "title": "年5日の年休取得",
+    "prompt": "法定の年次有給休暇が10日以上付与される労働者について、使用者が取得させるべき日数は原則何日ですか。",
+    "choices": [
+      "3日",
+      "5日",
+      "7日",
+      "10日"
+    ],
+    "answer": 1,
+    "explanation": "年10日以上付与される人について、基準日から1年以内に5日を取得させます。本人が取得した日数や計画年休の日数はその5日に算入します。",
+    "source": "https://www.mhlw.go.jp/web/t_doc?dataId=73022000&dataType=0",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "law-6",
+    "category": "労働法令",
+    "title": "36協定と割増賃金",
+    "prompt": "法定時間外労働を行わせるための36協定と割増賃金について、正しいものは？",
+    "choices": [
+      "協定があれば割増賃金は不要",
+      "割増賃金を払えば協定は不要",
+      "原則として協定の締結・届出と割増賃金の支払いの双方が必要",
+      "本人の同意だけで双方不要"
+    ],
+    "answer": 2,
+    "explanation": "36協定の締結・届出と、時間外労働に対する割増賃金の支払いは別の義務です。一方で他方を代替することはできません。",
+    "source": "https://www.check-roudou.mhlw.go.jp/study/roudousya_jikangai.html",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "law-7",
+    "category": "労働法令",
+    "title": "休業手当",
+    "prompt": "使用者の責めに帰すべき事由による休業の場合、労基法上必要な休業手当の最低基準は？",
+    "choices": [
+      "基本給の30%",
+      "平均賃金の60%",
+      "手取額の50%",
+      "通常時給の25%"
+    ],
+    "answer": 1,
+    "explanation": "第26条は平均賃金の60%以上の休業手当を定めています。基本給や手取額を基準にするものではありません。",
+    "source": "https://www.mhlw.go.jp/web/t_doc?dataId=73022000&dataType=0",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "law-8",
+    "category": "労働法令",
+    "title": "減給の制裁の上限",
+    "prompt": "就業規則に基づく減給の制裁の限度として正しいものは？",
+    "choices": [
+      "1回につき平均賃金1日分まで",
+      "1回につき月給の半額まで",
+      "1回につき平均賃金1日分の半額、総額は一賃金支払期の賃金総額の10分の1まで",
+      "上限はない"
+    ],
+    "answer": 2,
+    "explanation": "第91条では1回あたりと一賃金支払期の合計の両方に上限があります。欠勤した時間に対応する不就労控除とは区別します。",
+    "source": "https://www.mhlw.go.jp/web/t_doc?dataId=73022000&dataType=0",
+    "kind": "knowledge",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "time-k1",
+    "category": "労働時間・割増賃金",
+    "title": "法定内残業",
+    "prompt": "所定労働時間7時間、法定労働時間8時間の日に8時間勤務しました。週40時間も超えていません。7時間を超えた1時間の法定割増について正しいものは？",
+    "choices": [
+      "必ず25%以上の割増",
+      "必ず35%以上の割増",
+      "必ず50%以上の割増",
+      "法定の時間外割増は生じない（契約等の上乗せは別）"
+    ],
+    "answer": 3,
+    "explanation": "所定時間を超えても法定時間を超えていない残業には、労基法の時間外割増は生じません。通常賃金の支払いは必要で、契約等に割増の定めがあれば従います。",
+    "source": "https://www.check-roudou.mhlw.go.jp/study/roudousya_jikangai.html",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "time-k2",
+    "category": "労働時間・割増賃金",
+    "title": "時間外と深夜の重複",
+    "prompt": "月60時間以内の法定時間外労働が深夜に及んだ場合、最低限の割増率の合計は？",
+    "choices": [
+      "25%",
+      "35%",
+      "50%",
+      "60%"
+    ],
+    "answer": 2,
+    "explanation": "時間外25%以上と深夜25%以上を加算して50%以上です。通常賃金を含む支払倍率は1.50以上となります。",
+    "source": "https://www.check-roudou.mhlw.go.jp/study/roudousya_jikangai.html",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "time-k3",
+    "category": "労働時間・割増賃金",
+    "title": "月60時間を超える時間外",
+    "prompt": "2026年9月1日時点で、月60時間を超える法定時間外労働に対する割増率の最低基準は？",
+    "choices": [
+      "中小企業は25%、大企業は50%",
+      "企業規模を問わず50%",
+      "企業規模を問わず35%",
+      "企業規模を問わず75%"
+    ],
+    "answer": 1,
+    "explanation": "2023年4月から中小企業にも50%以上の基準が適用されています。深夜に重なる場合は深夜割増を別途加算します。",
+    "source": "https://www.check-roudou.mhlw.go.jp/study/roudousya_jikangai.html",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "time-k4",
+    "category": "労働時間・割増賃金",
+    "title": "一律の住宅手当",
+    "prompt": "全従業員に住宅費と無関係に毎月一律20,000円を支給する「住宅手当」の割増賃金算定基礎での扱いは？",
+    "choices": [
+      "名称が住宅手当なので必ず除外",
+      "基本給に含まれないので除外",
+      "原則として算入する",
+      "本人が希望すれば除外できる"
+    ],
+    "answer": 2,
+    "explanation": "除外できるかは手当の名前だけで決まりません。実際の住宅費に応じず一律に支給する手当は、住宅手当という名称でも除外の対象になりません。",
+    "source": "https://jsite.mhlw.go.jp/osaka-roudoukyoku/hourei_seido_tetsuzuki/roudoukijun_keiyaku/hourei_seido/jikan2/warimasi.html",
+    "kind": "knowledge",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "base-k1",
+    "category": "給与の基礎",
+    "title": "最低賃金の比較対象",
+    "prompt": "最低賃金と比較する賃金から除外される手当はどれですか。",
+    "choices": [
+      "毎月の職務手当",
+      "毎月の役職手当",
+      "通勤手当",
+      "毎月の資格手当"
+    ],
+    "answer": 2,
+    "explanation": "通勤手当は最低賃金の比較対象から除きます。割増賃金の算定基礎から除く項目と完全には一致しません。",
+    "source": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/chingin/newpage_43898.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "base-k2",
+    "category": "給与の基礎",
+    "title": "控除の根拠",
+    "prompt": "税金・社会保険料など法令に基づくもの以外の、親睦会費などを賃金から控除するときの労基法上の要件は？",
+    "choices": [
+      "会社の判断だけでよい",
+      "労働者代表等との書面による賃金控除協定が必要",
+      "給与明細に書けば足りる",
+      "全額払いの例外は一切ない"
+    ],
+    "answer": 1,
+    "explanation": "全額払いが原則ですが、法令に根拠があるものと、過半数労組または過半数代表者との書面による協定があるものには例外があります。控除債権自体の根拠も別途必要です。",
+    "source": "https://www.mhlw.go.jp/web/t_doc?dataId=73022000&dataType=0",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "ins-k1",
+    "category": "社会保険",
+    "title": "報酬に含める通勤手当",
+    "prompt": "社会保険の標準報酬月額の対象となる報酬について、非課税限度内の通勤手当の扱いは？",
+    "choices": [
+      "所得税が非課税でも原則として報酬に含める",
+      "非課税なので報酬に含めない",
+      "半分だけ含める",
+      "会社が自由に選ぶ"
+    ],
+    "answer": 0,
+    "explanation": "所得税と社会保険は扱いが異なります。標準報酬の対象には基本給だけでなく通勤手当や残業手当等も原則として含まれます。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "ins-k2",
+    "category": "社会保険",
+    "title": "随時改定の起算月",
+    "prompt": "4月支給分から基本給が増額し、随時改定の要件をすべて満たしました。改定後の標準報酬月額を適用する月は？",
+    "choices": [
+      "4月",
+      "6月",
+      "7月",
+      "9月"
+    ],
+    "answer": 2,
+    "explanation": "変更後の固定的賃金を初めて受けた4月を1か月目とし、4・5・6月の報酬を確認して4か月目の7月から改定します。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-02.html",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "ins-k3",
+    "category": "社会保険",
+    "title": "残業代だけが増えた場合",
+    "prompt": "基本給・各種手当の単価等は変わらず、残業時間の増加だけで報酬が増えました。通常の随時改定の扱いは？",
+    "choices": [
+      "2等級差があれば必ず対象",
+      "固定的賃金の変動がないため通常の随時改定の対象にならない",
+      "毎月自動で改定する",
+      "従業員の申告だけで改定する"
+    ],
+    "answer": 1,
+    "explanation": "通常の随時改定には固定的賃金の変動等が必要です。残業時間数の増加だけによる残業代の増加とは区別します。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-02.html",
+    "kind": "knowledge",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "ins-k4",
+    "category": "社会保険",
+    "title": "退職による資格喪失日",
+    "prompt": "2026年9月30日に退職した被保険者の、退職による健康保険・厚生年金保険の資格喪失日は？",
+    "choices": [
+      "9月29日",
+      "9月30日",
+      "10月1日",
+      "10月31日"
+    ],
+    "answer": 2,
+    "explanation": "退職による資格喪失日は退職日の翌日です。この場合は10月1日となります。",
+    "source": "https://www.nenkin.go.jp/service/kounen/tekiyo/hihokensha1/20150407-02.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "ins-k5",
+    "category": "社会保険",
+    "title": "労災保険料の負担",
+    "prompt": "通常の労働者に係る労災保険料の負担はどれですか。",
+    "choices": [
+      "労使折半",
+      "全額労働者負担",
+      "全額事業主負担",
+      "国と労働者の折半"
+    ],
+    "answer": 2,
+    "explanation": "労働保険のうち、労災保険分は全額事業主負担です。給与から本人負担として控除する保険料ではありません。",
+    "source": "https://www.mhlw.go.jp/seisakunitsuite/bunya/koyou_roudou/roudoukijun/hoken/tokusetusaito/about.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "ins-k6",
+    "category": "社会保険",
+    "title": "2026年度の介護保険料率",
+    "prompt": "2026年3月分以降の協会けんぽの介護保険料率（労使合計）はどれですか。",
+    "choices": [
+      "1.59%",
+      "1.62%",
+      "1.82%",
+      "0.23%"
+    ],
+    "answer": 1,
+    "explanation": "2026年3月分から1.62%です。協会けんぽでは40歳以上65歳未満の介護保険第2号被保険者について、医療分に介護保険料を加えます。",
+    "source": "https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/002/",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "ins-k7",
+    "category": "社会保険",
+    "title": "2026年度の雇用保険料率",
+    "prompt": "2026年度の一般の事業で、雇用保険の労働者負担率はどれですか。",
+    "choices": [
+      "5/1,000",
+      "5.5/1,000",
+      "6/1,000",
+      "8.5/1,000"
+    ],
+    "answer": 0,
+    "explanation": "一般の事業の労働者負担は5/1,000です。事業主負担や農林水産・清酒製造・建設の事業の率と取り違えないようにします。",
+    "source": "https://www.mhlw.go.jp/stf/newpage_71570.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "ins-k8",
+    "category": "社会保険",
+    "title": "2026年開始の支援金",
+    "prompt": "2026年4月分からの協会けんぽの子ども・子育て支援金について正しいものは？",
+    "choices": [
+      "労働者に子がいる場合だけ徴収",
+      "支援金率は0.23%（労使合計）で労使折半",
+      "支援金率は18.3%",
+      "既存の子ども・子育て拠出金と同一のもの"
+    ],
+    "answer": 1,
+    "explanation": "2026年度の支援金率は0.23%で、被用者保険では基本的に労使折半です。事業主が全額負担する子ども・子育て拠出金と区別しましょう。",
+    "source": "https://www.kyoukaikenpo.or.jp/lp/2026hokenryou/",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "tax-k1",
+    "category": "税金・控除",
+    "title": "月額表の甲欄・乙欄",
+    "prompt": "毎月支払う給与について、給与所得者の扶養控除等申告書を提出している人に通常適用する税額表の欄は？",
+    "choices": [
+      "甲欄",
+      "乙欄",
+      "丙欄",
+      "必ず税率20%"
+    ],
+    "answer": 0,
+    "explanation": "原則として申告書の提出がある人は甲欄、その他の人は乙欄を使います。扶養親族がいないことと申告書を提出しないことは別です。",
+    "source": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2511.htm",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "tax-k2",
+    "category": "税金・控除",
+    "title": "税額表に当てはめる金額",
+    "prompt": "給与所得の源泉徴収税額表に当てはめる金額として正しいものは？",
+    "choices": [
+      "総支給額から住民税だけを引いた額",
+      "課税給与から社会保険料等を控除した後の額",
+      "必ず基本給だけ",
+      "所得税・住民税まで引いた手取額"
+    ],
+    "answer": 1,
+    "explanation": "課税対象となる給与から社会保険料等を控除した後の金額を用います。住民税を差し引いてから所得税を求めるわけではありません。",
+    "source": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2511.htm",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "tax-k3",
+    "category": "税金・控除",
+    "title": "2026年分の税額表",
+    "prompt": "2026年中に通常支払う給与の源泉徴収で参照する税額表として適切なものは？",
+    "choices": [
+      "前年と金額が同じなら2025年分でよい",
+      "2026年分（令和8年分）の表",
+      "公表済みなら2027年分を先取り",
+      "最も税額が低い年度の表"
+    ],
+    "answer": 1,
+    "explanation": "給与の支払年に対応する令和8年分の表を使用します。翌年の表が公表済みでも先取りしません。",
+    "source": "https://www.nta.go.jp/publication/pamph/gensen/zeigakuhyo2026/01.htm",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "bonus-k1",
+    "category": "賞与計算",
+    "title": "標準賞与額の端数処理",
+    "prompt": "社会保険料計算に使う標準賞与額の原則的な端数処理は？",
+    "choices": [
+      "1円未満を切り捨て",
+      "100円未満を切り上げ",
+      "1,000円未満を切り捨て",
+      "10,000円未満を四捨五入"
+    ],
+    "answer": 2,
+    "explanation": "税引き前の賞与の総支給額から1,000円未満を切り捨てます。手取額から標準賞与額を求めるわけではありません。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "bonus-k2",
+    "category": "賞与計算",
+    "title": "厚生年金の標準賞与額の上限",
+    "prompt": "厚生年金保険の標準賞与額の上限として正しいものは？",
+    "choices": [
+      "1回あたり150万円で同月の支給を別々に判定",
+      "同じ月の支給を合算して150万円",
+      "年度合計150万円",
+      "年度合計573万円"
+    ],
+    "answer": 1,
+    "explanation": "厚生年金では1か月あたり150万円が上限です。同月に複数回支給したときは合算して判定します。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "bonus-k3",
+    "category": "賞与計算",
+    "title": "健康保険の標準賞与額の上限",
+    "prompt": "健康保険の標準賞与額の上限はどれですか。",
+    "choices": [
+      "1か月150万円",
+      "1回573万円",
+      "年度累計573万円",
+      "暦年累計150万円"
+    ],
+    "answer": 2,
+    "explanation": "健康保険は4月1日から翌年3月31日までの年度累計573万円が上限です。厚生年金の月単位の上限と混同しないようにします。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "bonus-k4",
+    "category": "賞与計算",
+    "title": "賞与支払届の期限",
+    "prompt": "原則として被保険者賞与支払届を提出する期限は、賞与支給日から何日以内ですか。",
+    "choices": [
+      "3日",
+      "5日",
+      "10日",
+      "翌月末日"
+    ],
+    "answer": 1,
+    "explanation": "事業主は支給日より5日以内に提出します。保険料の納期限と届出の期限は別です。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+    "kind": "knowledge",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "bonus-k5",
+    "category": "賞与計算",
+    "title": "賞与の源泉税率を決める情報",
+    "prompt": "原則的な賞与の源泉徴収計算で、甲欄の算出率を決めるために使う情報は？",
+    "choices": [
+      "賞与の手取額だけ",
+      "今年の見込年収だけ",
+      "前月の社会保険料等控除後の給与と扶養親族等の数",
+      "基本給の入社時の金額"
+    ],
+    "answer": 2,
+    "explanation": "通常は前月の給与から社会保険料等を控除した金額と、扶養親族等の数で算出率を求めます。その率を賞与の社会保険料等控除後の額に掛けます。",
+    "source": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2523.htm",
+    "kind": "knowledge",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "bonus-k6",
+    "category": "賞与計算",
+    "title": "年4回以上の支給",
+    "prompt": "労働の対償として定期的に年4回以上支給するものの社会保険上の原則的な扱いは？",
+    "choices": [
+      "支給回数によらずすべて標準賞与額の対象",
+      "標準報酬月額の対象",
+      "社会保険料の対象外",
+      "所得税も必ず非課税"
+    ],
+    "answer": 1,
+    "explanation": "年4回以上支給されるものは原則として標準報酬月額の対象となります。名称が賞与でも、回数など実態を確認します。",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+    "kind": "knowledge",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "calc-1",
+    "category": "労働時間・割増賃金",
+    "title": "時間外と深夜を同時に計算",
+    "prompt": "基礎時給1,600円。月60時間以内の法定時間外労働のうち、深夜に働いた時間が3時間です。この3時間の通常賃金を含む支払額は？",
+    "answer": 7200,
+    "unit": "円",
+    "explanation": "時間外25%と深夜25%を合算し、1.50倍で計算します。時間外手当の計算に深夜分を重複計上しないようにします。",
+    "formula": "1,600 × (1 + 0.25 + 0.25) × 3 = 7,200円",
+    "source": "https://www.check-roudou.mhlw.go.jp/study/roudousya_jikangai.html",
+    "kind": "calculation",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "calc-2",
+    "category": "労働時間・割増賃金",
+    "title": "法定休日の深夜労働",
+    "prompt": "基礎時給2,000円。法定休日の深夜に2時間労働しました。休日35%、深夜25%で、通常賃金を含む支払額は？",
+    "answer": 6400,
+    "unit": "円",
+    "explanation": "休日35%と深夜25%を加算します。法定休日労働に時間外25%をさらに加える計算はしません。",
+    "formula": "2,000 × (1 + 0.35 + 0.25) × 2 = 6,400円",
+    "source": "https://www.check-roudou.mhlw.go.jp/study/roudousya_jikangai.html",
+    "kind": "calculation",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "calc-3",
+    "category": "労働時間・割増賃金",
+    "title": "月60時間超の時間外手当",
+    "prompt": "基礎時給2,000円。法定時間外労働が月65時間、深夜・法定休日労働はありません。60時間まで25%、超過分50%のとき時間外手当総額は？",
+    "answer": 165000,
+    "unit": "円",
+    "explanation": "最初の60時間と超過5時間を分け、異なる倍率を使います。通常賃金分も含む時間外手当の総額です。",
+    "formula": "2,000 × 1.25 × 60 + 2,000 × 1.50 × 5 = 165,000円",
+    "source": "https://www.check-roudou.mhlw.go.jp/study/roudousya_jikangai.html",
+    "kind": "calculation",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "calc-4",
+    "category": "給与の基礎",
+    "title": "遅刻早退控除",
+    "prompt": "就業規則により遅刻早退は「基本給÷月平均所定労働時間×不就労時間」で控除します。基本給240,000円、160時間、遅刻早退合計1時間30分の控除額は？",
+    "answer": 2250,
+    "unit": "円",
+    "explanation": "1時間30分は1.5時間です。1.30時間として計算しないことがポイントです。",
+    "formula": "240,000 ÷ 160 × 1.5 = 2,250円",
+    "kind": "calculation",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "calc-5",
+    "category": "給与の基礎",
+    "title": "手当を含む割増基礎時給",
+    "prompt": "基本給240,000円、役職手当16,000円、実費に応じた通勤手当12,000円。月平均所定労働160時間。ほかの支給はありません。基礎時給は？",
+    "answer": 1600,
+    "unit": "円",
+    "explanation": "役職手当は算入し、実費に応じた通勤手当は除外します。所得税の課税・非課税の区分と同じ基準ではありません。",
+    "formula": "(240,000 + 16,000) ÷ 160 = 1,600円",
+    "source": "https://jsite.mhlw.go.jp/osaka-roudoukyoku/hourei_seido_tetsuzuki/roudoukijun_keiyaku/hourei_seido/jikan2/warimasi.html",
+    "kind": "calculation",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "calc-6",
+    "category": "給与の基礎",
+    "title": "平均賃金と休業手当",
+    "prompt": "算定対象3か月の賃金総額900,000円、暦日数90日。除外期間や最低保障の考慮は不要とします。使用者都合で1日全休した場合の休業手当の法定最低額は？",
+    "answer": 6000,
+    "unit": "円",
+    "explanation": "平均賃金は対象賃金÷暦日数で10,000円。その60%が1日分の休業手当の最低基準です。実際には除外期間や最低保障にも注意します。",
+    "formula": "900,000 ÷ 90 × 0.60 = 6,000円",
+    "source": "https://www.mhlw.go.jp/web/t_doc?dataId=73022000&dataType=0",
+    "kind": "calculation",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "calc-7",
+    "category": "社会保険",
+    "title": "2026年度・介護保険の本人負担",
+    "prompt": "協会けんぽ加入、45歳、標準報酬月額300,000円。介護保険料率は労使合計1.62%、労使折半。介護保険料だけの本人負担額は？",
+    "answer": 2430,
+    "unit": "円",
+    "explanation": "2026年3月分以降の介護保険料率を使用します。医療分や子ども・子育て支援金は含めない設問です。",
+    "formula": "300,000 × 1.62% ÷ 2 = 2,430円",
+    "source": "https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/002/",
+    "kind": "calculation",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "calc-8",
+    "category": "社会保険",
+    "title": "2026年度・子ども・子育て支援金",
+    "prompt": "2026年4月分以降の協会けんぽ加入者。標準報酬月額300,000円、支援金率は労使合計0.23%、労使折半。本人負担額は？",
+    "answer": 345,
+    "unit": "円",
+    "explanation": "新たな支援金の計算です。標準報酬月額に0.23%を掛けた総額690円の半分を本人が負担します。",
+    "formula": "300,000 × 0.23% ÷ 2 = 345円",
+    "source": "https://www.kyoukaikenpo.or.jp/lp/2026hokenryou/",
+    "kind": "calculation",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "calc-9",
+    "category": "社会保険",
+    "title": "2026年度・雇用保険と通勤手当",
+    "prompt": "2026年9月、一般の事業。基本給280,000円、残業手当20,000円、非課税の通勤手当10,000円。雇用保険の本人負担率5/1,000の場合、本人負担額は？",
+    "answer": 1550,
+    "unit": "円",
+    "explanation": "所得税が非課税の通勤手当も、雇用保険料の対象賃金には原則として含めます。標準報酬月額ではなく、この対象賃金に料率を掛けます。",
+    "formula": "(280,000 + 20,000 + 10,000) × 5 ÷ 1,000 = 1,550円",
+    "source": "https://www.mhlw.go.jp/stf/newpage_71570.html",
+    "kind": "calculation",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "calc-10",
+    "category": "社会保険",
+    "title": "厚生年金の本人負担",
+    "prompt": "標準報酬月額320,000円、厚生年金保険料率18.3%（労使合計）で労使折半。通常の本人負担月額は？",
+    "answer": 29280,
+    "unit": "円",
+    "explanation": "標準報酬月額に本人負担率9.15%を掛けます。実際の支給額を直接掛けるものではありません。",
+    "formula": "320,000 × 18.3% ÷ 2 = 29,280円",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html",
+    "kind": "calculation",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "calc-11",
+    "category": "賞与計算",
+    "title": "標準賞与額の算出",
+    "prompt": "年2回支給の賞与で、今回の総支給額は654,780円。同月にほかの賞与支給はなく、上限にも達していません。標準賞与額は？",
+    "answer": 654000,
+    "unit": "円",
+    "explanation": "税引き前の賞与額から1,000円未満を切り捨てます。四捨五入や1万円未満切り捨てではありません。",
+    "formula": "654,780円 → 1,000円未満切り捨て → 654,000円",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+    "kind": "calculation",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "calc-12",
+    "category": "賞与計算",
+    "title": "賞与の厚生年金保険料",
+    "prompt": "賞与総支給額802,600円。同月のほかの賞与はなく上限未満。厚生年金保険料率18.3%（労使折半）。本人負担額は？",
+    "answer": 73383,
+    "unit": "円",
+    "explanation": "まず標準賞与額を802,000円とし、9.15%を掛けます。総支給額802,600円をそのまま掛けないようにします。",
+    "formula": "802,000 × 18.3% ÷ 2 = 73,383円",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+    "kind": "calculation",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "calc-13",
+    "category": "賞与計算",
+    "title": "賞与の厚生年金上限",
+    "prompt": "厚生年金加入者に同月中1回だけ2,000,000円の賞与を支給。厚生年金保険料率18.3%（労使折半）。本人負担額は？",
+    "answer": 137250,
+    "unit": "円",
+    "explanation": "標準賞与額の上限150万円を適用してから本人負担額を計算します。",
+    "formula": "1,500,000 × 18.3% ÷ 2 = 137,250円",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+    "kind": "calculation",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "calc-14",
+    "category": "賞与計算",
+    "title": "健康保険の年度累計上限",
+    "prompt": "同じ健康保険の被保険者資格が継続しています。今年度の標準賞与額累計は5,200,000円。今回の賞与は800,000円。健康保険で今回保険料の対象にする額は？",
+    "answer": 530000,
+    "unit": "円",
+    "explanation": "健康保険の年度累計上限573万円までの残額を計算します。今回の80万円全額を対象にするわけではありません。",
+    "formula": "5,730,000 − 5,200,000 = 530,000円",
+    "source": "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20141203.html",
+    "kind": "calculation",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "calc-15",
+    "category": "賞与計算",
+    "title": "賞与の源泉所得税",
+    "prompt": "賞与600,000円、控除する社会保険料等90,000円。前月給与等から決定した2026年分の算出率を4.084%と設問で指定します。通常の算出率による計算で、1円未満切り捨て。源泉税額は？",
+    "answer": 20828,
+    "unit": "円",
+    "explanation": "賞与の支給額から社会保険料等を差し引いた510,000円に指定率を掛けます。算出率は設問資料として与えており、すべての人に共通の率ではありません。",
+    "formula": "(600,000 − 90,000) × 4.084% = 20,828.4 → 20,828円",
+    "source": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2523.htm",
+    "kind": "calculation",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "calc-16",
+    "category": "給与の基礎",
+    "title": "給与明細の総合演習",
+    "prompt": "基本給256,000円、役職手当16,000円、実費通勤手当10,000円。月平均所定160時間。法定時間外10時間（25%割増、深夜なし）。控除合計は55,000円と確定済み。差引支給額は？",
+    "answer": 248250,
+    "unit": "円",
+    "explanation": "基礎時給は(256,000+16,000)÷160=1,700円。時間外手当21,250円を各支給項目に足し、確定済みの控除額を引きます。",
+    "formula": "256,000 + 16,000 + 10,000 + (1,700 × 1.25 × 10) − 55,000 = 248,250円",
+    "source": "https://jsite.mhlw.go.jp/osaka-roudoukyoku/hourei_seido_tetsuzuki/roudoukijun_keiyaku/hourei_seido/jikan2/warimasi.html",
+    "kind": "calculation",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "calc-17",
+    "category": "税金・控除",
+    "title": "課税・非課税通勤費の区分",
+    "prompt": "2026年9月支給。基本給270,000円、通勤手当22,000円。設問の資料により通勤手当の非課税額は18,000円、課税額は4,000円と確定済み。控除する社会保険料等42,000円。月額表に当てはめる金額は？",
+    "answer": 232000,
+    "unit": "円",
+    "explanation": "課税通勤手当4,000円だけを課税給与に足し、社会保険料等を差し引きます。非課税限度額の実際の判定は交通手段等により異なり、この問題では確定値を与えています。",
+    "formula": "270,000 + 4,000 − 42,000 = 232,000円",
+    "source": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2511.htm",
+    "kind": "calculation",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "calc-18",
+    "category": "賞与計算",
+    "title": "2026年度・賞与の支援金",
+    "prompt": "2026年9月、協会けんぽ加入者に賞与500,900円を支給。標準賞与額は500,000円、年度上限に余裕があります。支援金率0.23%（労使合計・折半）。賞与に係る本人負担の支援金は？",
+    "answer": 575,
+    "unit": "円",
+    "explanation": "健康保険と同様に標準賞与額を使い、支援金率を掛けて折半します。本人に子どもがいるかどうかで徴収の有無は変わりません。",
+    "formula": "500,000 × 0.23% ÷ 2 = 575円",
+    "source": "https://www.kyoukaikenpo.or.jp/lp/2026hokenryou/",
+    "kind": "calculation",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "calc-19",
+    "category": "給与の基礎",
+    "title": "2026年度・社会保険料を含む総合演習",
+    "prompt": "2026年9月分。45歳・一般の事業・協会けんぽ東京支部の従業員について、下の資料から差引支給額を求めてください。表の社会保険料率は雇用保険を除き労使合計で、労使折半とします。他の控除はありません。",
+    "answer": 235300,
+    "unit": "円",
+    "explanation": "医療分14,775円、介護2,430円、厚生年金27,450円、支援金345円、雇用保険1,500円を足すと46,500円です。さらに確定済みの所得税と住民税を差し引きます。2026年度の東京支部の料率を使い、健康保険と支援金を区別して計算します。",
+    "formula": "300,000 − (14,775 + 2,430 + 27,450 + 345 + 1,500) − 6,200 − 12,000 = 235,300円",
+    "source": "https://www.kyoukaikenpo.or.jp/~/media/Files/shared/hokenryouritu/r8/ippan/R8_13tokyo.pdf",
+    "materials": [
+      {
+        "label": "総支給額・各標準報酬月額",
+        "value": "300,000円"
+      },
+      {
+        "label": "健康保険（医療分）",
+        "value": "9.85%"
+      },
+      {
+        "label": "介護保険",
+        "value": "1.62%"
+      },
+      {
+        "label": "厚生年金",
+        "value": "18.3%"
+      },
+      {
+        "label": "子ども・子育て支援金",
+        "value": "0.23%"
+      },
+      {
+        "label": "雇用保険（本人負担率）",
+        "value": "0.5%"
+      },
+      {
+        "label": "所得税（確定済み）",
+        "value": "6,200円"
+      },
+      {
+        "label": "住民税（確定済み）",
+        "value": "12,000円"
+      }
+    ],
+    "kind": "calculation",
+    "difficulty": "advanced"
+  }
+]

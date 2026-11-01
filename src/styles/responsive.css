@@ -1,0 +1,691 @@
+@media (min-width: 1450px) {
+  main {
+    padding-top: 33px;
+  }
+  .category-card {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+}
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 190px;
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+  .brand {
+    font-size: 16px;
+  }
+  .main-shell {
+    margin-left: 190px;
+    width: calc(100% - 190px);
+  }
+  .topbar {
+    padding: 0 24px;
+  }
+  main {
+    padding: 25px 24px 0;
+  }
+  .dashboard-bottom {
+    grid-template-columns: minmax(0, 1fr) 200px;
+    gap: 16px;
+  }
+  .category-card {
+    grid-template-columns: 22px 1fr 94px;
+    column-gap: 9px;
+    padding: 15px 11px;
+  }
+  .category-progress {
+    font-size: 9px;
+  }
+  .genre-selector {
+    gap: 12px;
+  }
+  .genre-options button {
+    padding: 9px 11px;
+    font-size: 11px;
+  }
+  .study-layout {
+    grid-template-columns: minmax(0, 1fr) 185px;
+    gap: 16px;
+  }
+  .study-aside {
+    padding: 17px;
+  }
+  .stat-card {
+    padding: 13px 11px;
+  }
+  .stat-label {
+    font-size: 11px;
+  }
+  .stat-card > p {
+    font-size: 9px;
+  }
+  .library-question > span {
+    max-width: 400px;
+  }
+}
+@media (max-width: 850px) {
+  .dashboard-bottom {
+    grid-template-columns: 1fr;
+  }
+  .daily-panel {
+    display: none;
+  }
+  .mobile-goal {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 4px;
+    margin-top: 15px;
+    padding: 11px 14px;
+  }
+  .mobile-goal > span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #6b8197;
+  }
+  .mobile-goal b {
+    font-size: 18px;
+    color: #3e6d98;
+    white-space: nowrap;
+  }
+  .mobile-goal small {
+    font-size: 11px;
+    font-weight: 400;
+    color: #8797a7;
+  }
+  .mobile-goal .progress-track {
+    flex: 1;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .study-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .study-aside {
+    display: none;
+  }
+  .genre-selector {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .genre-options {
+    width: 100%;
+  }
+  .genre-options button {
+    flex: 1;
+  }
+  .library-genres .genre-options {
+    width: auto;
+    flex: 1;
+  }
+  .practice-start {
+    padding: 19px;
+  }
+  .practice-start p {
+    font-size: 11px;
+  }
+  .practice-start .primary {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+  .page-heading {
+    gap: 15px;
+  }
+  h1 {
+    font-size: 21px;
+  }
+  .date-label {
+    font-size: 10px;
+  }
+  .stat-label {
+    font-size: 12px;
+  }
+  .stat-card > p {
+    font-size: 10px;
+  }
+  .stat-card {
+    padding: 14px;
+  }
+  .library-question > span {
+    max-width: 300px;
+  }
+}
+@media (max-width: 640px) {
+  :root {
+    font-size: 15px;
+  }
+  .sidebar {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding: 0 6px env(safe-area-inset-bottom, 0px);
+    border: 0;
+    border-top: 1px solid var(--border);
+    background: #fff;
+    z-index: 30;
+  }
+  .sidebar .brand,
+  .sidebar .course-label,
+  .sidebar .help-link {
+    display: none;
+  }
+  .sidebar nav {
+    display: flex;
+    justify-content: space-around;
+    gap: 0;
+    height: 100%;
+  }
+  .nav-item {
+    width: 25%;
+    padding: 6px 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-height: 60px;
+    font-size: 10px;
+    text-align: center;
+    border-radius: 0;
+    background: none !important;
+    position: relative;
+  }
+  .nav-item.active:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 27px;
+    height: 2px;
+    background: #457dad;
+  }
+  .nav-count {
+    display: none;
+  }
+  .main-shell {
+    margin-left: 0;
+    width: 100%;
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+  .topbar {
+    height: 50px;
+    padding: 0 15px;
+  }
+  .breadcrumb {
+    font-size: 11px;
+    gap: 7px;
+  }
+  .edition-badge {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+  .local-badge {
+    font-size: 9px;
+    gap: 4px;
+  }
+  main {
+    padding: 21px 15px 0;
+  }
+  .page-heading {
+    margin-bottom: 19px;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 19px;
+  }
+  .page-heading p {
+    font-size: 11px;
+    line-height: 1.9;
+    margin-top: 6px;
+  }
+  .date-label {
+    display: none;
+  }
+  .genre-selector {
+    margin-bottom: 14px;
+  }
+  .genre-selector > div:first-child {
+    font-size: 12px;
+  }
+  .genre-options button {
+    font-size: 12px;
+    gap: 5px;
+    padding: 10px 6px;
+    min-height: 46px;
+  }
+  .genre-options button small {
+    font-size: 9px;
+    white-space: nowrap;
+  }
+  .genre-options button svg {
+    width: 15px;
+  }
+  .practice-start {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 18px;
+  }
+  .practice-start h2 {
+    font-size: 16px;
+  }
+  .practice-start p {
+    font-size: 12px;
+    line-height: 1.9;
+  }
+  .practice-start .primary {
+    min-height: 48px;
+    font-size: 14px;
+  }
+  .session-count {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .mobile-goal {
+    padding: 10px 13px;
+    gap: 14px;
+  }
+  .stats-grid {
+    margin-top: 14px;
+    margin-bottom: 24px;
+    gap: 9px;
+  }
+  .stat-card {
+    padding: 12px;
+  }
+  .stat-label {
+    font-size: 11px;
+    gap: 6px;
+  }
+  .stat-icon svg {
+    width: 15px;
+  }
+  .stat-value {
+    font-size: 26px;
+    margin-top: 4px;
+  }
+  .stat-value small {
+    font-size: 11px;
+  }
+  .stat-card > p {
+    font-size: 9px;
+    line-height: 1.7;
+  }
+  .section-heading {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .section-heading h3 {
+    font-size: 15px;
+  }
+  .section-heading p {
+    font-size: 10px;
+    line-height: 1.8;
+  }
+  .text-link {
+    font-size: 11px;
+    min-height: 44px;
+    white-space: nowrap;
+  }
+  .category-card {
+    grid-template-columns: 22px 1fr 94px;
+    column-gap: 9px;
+    row-gap: 4px;
+    min-height: 77px;
+    padding: 13px 11px;
+  }
+  .category-card h4 {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .category-card > p {
+    font-size: 10px;
+    line-height: 1.7;
+  }
+  .category-progress {
+    font-size: 9px;
+    gap: 3px;
+  }
+  .category-top svg {
+    width: 17px;
+  }
+  .edition-note {
+    align-items: flex-start;
+    gap: 2px;
+    margin-top: 14px;
+    flex-direction: column;
+    font-size: 10px;
+  }
+  .edition-note .text-link {
+    min-height: 36px;
+  }
+  footer {
+    font-size: 9px;
+    padding: 15px 0;
+    gap: 10px;
+    margin-top: 21px;
+  }
+  footer > small {
+    display: none;
+  }
+  .is-studying .sidebar {
+    display: none;
+  }
+  .is-studying .main-shell {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .is-studying .page-heading {
+    align-items: center;
+    margin-bottom: 17px;
+  }
+  .is-studying .page-heading h1 {
+    font-size: 20px;
+  }
+  .is-studying .page-heading p {
+    font-size: 10px;
+  }
+  .page-heading > .secondary {
+    font-size: 10px;
+    min-height: 44px;
+    padding: 8px 10px;
+  }
+  .question-card {
+    padding: 18px 15px;
+  }
+  .question-meta {
+    gap: 8px;
+    font-size: 10px;
+  }
+  .badge {
+    font-size: 11px;
+    padding: 4px 7px;
+  }
+  .question-category {
+    font-size: 10px;
+  }
+  .question-meta > .icon-button {
+    min-height: 44px;
+    min-width: 36px;
+    padding: 5px;
+  }
+  .session-progress {
+    margin: 13px 0 20px;
+  }
+  .question-number {
+    font-size: 10px;
+  }
+  .question-card h2 {
+    font-size: 21px;
+    margin: 7px 0 17px;
+    line-height: 1.7;
+  }
+  .question-prompt {
+    font-size: 15px;
+    line-height: 2;
+  }
+  .question-edition {
+    font-size: 10px;
+    line-height: 1.9;
+  }
+  .answers {
+    gap: 11px;
+    margin: 21px 0;
+  }
+  .answer {
+    min-height: 63px;
+    padding: 14px 12px;
+    font-size: 15px;
+    line-height: 1.9;
+    gap: 10px;
+  }
+  .answer-letter {
+    width: 27px;
+    height: 27px;
+    font-size: 12px;
+  }
+  .explanation h3 {
+    font-size: 16px;
+  }
+  .explanation > p {
+    font-size: 14px;
+    line-height: 2.1;
+  }
+  .formula {
+    font-size: 13px;
+    padding: 13px;
+    line-height: 2;
+  }
+  .source-link {
+    font-size: 12px;
+    min-height: 44px;
+  }
+  .rating-heading {
+    font-size: 12px;
+    line-height: 1.9;
+  }
+  .ratings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .rating {
+    min-height: 65px;
+    padding: 12px 8px;
+  }
+  .rating b {
+    font-size: 14px;
+  }
+  .rating small {
+    font-size: 12px;
+  }
+  .rating:only-child {
+    grid-column: 1/-1;
+  }
+  .completion {
+    padding: 35px 18px;
+  }
+  .completion h2 {
+    font-size: 22px;
+  }
+  .completion p {
+    font-size: 13px;
+  }
+  .completion .primary {
+    min-height: 49px;
+    font-size: 14px;
+  }
+  .library-genres {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  .library-genres .genre-options {
+    width: 100%;
+    flex-basis: 100%;
+  }
+  .bookmark-filter {
+    min-height: 44px;
+    font-size: 12px;
+  }
+  .library-toolbar {
+    gap: 13px;
+  }
+  .filter-tabs {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    gap: 6px;
+  }
+  .filter-tabs button {
+    font-size: 12px;
+    min-height: 44px;
+    flex-shrink: 0;
+    padding: 9px 11px;
+  }
+  .search {
+    width: 100%;
+    min-height: 46px;
+  }
+  .search input {
+    width: 100%;
+    font-size: 16px;
+  }
+  .library-list {
+    padding: 0 9px;
+  }
+  .library-row {
+    gap: 4px;
+    flex-wrap: wrap;
+    padding: 14px 0;
+  }
+  .library-row > .icon-button {
+    min-width: 40px;
+    min-height: 44px;
+    padding: 8px;
+  }
+  .library-question {
+    max-width: calc(100% - 88px);
+  }
+  .library-question small {
+    font-size: 10px;
+    line-height: 1.9;
+  }
+  .library-question b {
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .library-question > span {
+    max-width: 100%;
+    font-size: 12px;
+    line-height: 1.9;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .library-due {
+    font-size: 10px;
+    order: 5;
+    width: 100%;
+    padding-left: 44px;
+  }
+  .content-note {
+    font-size: 11px;
+    line-height: 2;
+  }
+  .activity-panel,
+  .history-panel {
+    padding: 20px 15px;
+  }
+  .activity-chart {
+    height: 190px;
+    padding: 0;
+    gap: 10px;
+  }
+  .activity-day > small {
+    font-size: 9px;
+  }
+  .activity-day > strong {
+    font-size: 15px;
+  }
+  .history-row {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .history-row b {
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .history-row > span:not(.result-dot) {
+    font-size: 10px;
+  }
+  .history-row small {
+    font-size: 9px;
+  }
+  .settings-panel {
+    padding: 21px 18px;
+  }
+  .settings-panel h3 {
+    font-size: 15px;
+  }
+  .settings-panel p {
+    font-size: 14px;
+    line-height: 2;
+  }
+  .settings-panel .secondary {
+    min-height: 46px;
+    font-size: 13px;
+  }
+  .goal-input {
+    font-size: 14px;
+  }
+  .goal-input select {
+    font-size: 16px;
+    min-height: 47px;
+  }
+  .danger-button {
+    min-height: 46px;
+    font-size: 12px;
+  }
+  .modal-backdrop {
+    padding: 17px;
+  }
+  .modal {
+    padding: 28px 21px;
+  }
+  .modal h2 {
+    font-size: 21px;
+  }
+  .modal h3 {
+    font-size: 15px;
+  }
+  .modal p {
+    font-size: 14px;
+    line-height: 2;
+  }
+  .modal .primary {
+    min-height: 48px;
+    font-size: 13px;
+  }
+  .modal .icon-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .notice {
+    font-size: 12px;
+    line-height: 1.9;
+    gap: 8px;
+  }
+  .notice button {
+    min-width: 40px;
+    min-height: 40px;
+  }
+  .question-materials {
+    font-size: 12px;
+  }
+  .question-materials caption {
+    font-size: 12px;
+  }
+  .question-materials th,
+  .question-materials td {
+    padding: 10px;
+    line-height: 1.9;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}
