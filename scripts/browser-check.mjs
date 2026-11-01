@@ -133,10 +133,21 @@ assert.ok(
 );
 await calculatorToggle.click();
 await page.setViewportSize({ width: 1440, height: 1100 });
+await page.getByRole("button", { name: "メモを開く" }).click();
+const memoInput = page.getByLabel("途中計算・メモ");
+await memoInput.fill("250000 + 20000 = 270000");
+assert.equal(await memoInput.inputValue(), "250000 + 20000 = 270000");
+await page.locator(".question-memo-clear").click();
+assert.equal(await memoInput.inputValue(), "");
+await memoInput.fill("残らないメモ");
 await page.getByLabel("解答の数値").fill("225000");
 await page.getByRole("button", { name: "回答する", exact: true }).click();
 await page.getByRole("heading", { name: "正解", exact: true }).waitFor();
 await page.getByRole("button", { name: /できた/ }).click();
+assert.equal(await memoInput.inputValue(), "");
+await calculatorToggle.click();
+assert.equal(await page.getByLabel("電卓の表示").textContent(), "0");
+await calculatorToggle.click();
 assert.equal(
   await page.evaluate(
     () => JSON.parse(localStorage.getItem("kyuyo-study-v2")).reviews.length,

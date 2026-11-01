@@ -37,7 +37,7 @@ const displayExpression = (value: string) =>
     .replaceAll("/", " ÷ ")
     .replaceAll("+", " + ")
     .replaceAll("-", " − ");
-export function Calculator() {
+export function Calculator({ resetKey }: { resetKey?: string }) {
   const [open, setOpen] = useState(false);
   const [state, dispatch] = useReducer(
     calculatorReducer,
@@ -48,6 +48,9 @@ export function Calculator() {
   const trigger = useRef<HTMLButtonElement>(null);
   const history = useRef<HTMLDivElement>(null);
   const display = useRef<HTMLOutputElement>(null);
+  useEffect(() => {
+    dispatch({ type: "clear" });
+  }, [resetKey]);
   useEffect(() => {
     if (open) display.current?.focus({ preventScroll: true });
   }, [open]);

@@ -32,7 +32,6 @@ export function StudyScreen({
       ) : (
         <div className="study-layout">
           <QuestionCard
-            key={q.id}
             question={q}
             session={session}
             bookmarked={data.bookmarks.includes(q.id)}
