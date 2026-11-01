@@ -1,5 +1,5 @@
-import { useEffect, useId, useState } from "react";
-import { Bookmark, Check, Eraser, NotebookPen, X } from "lucide-react";
+import { useState } from "react";
+import { Bookmark, Check, X } from "lucide-react";
 import {
   difficultyInfo,
   formatCalculationAnswer,
@@ -8,6 +8,7 @@ import {
 } from "../../../lib/questions";
 import type { StudySession } from "../hooks/use-study-session";
 import { Calculator } from "./calculator";
+import { Memo } from "./memo";
 import { AnswerExplanation } from "./answer-explanation";
 export function QuestionCard({
   question: q,
@@ -32,14 +33,12 @@ export function QuestionCard({
     grade,
   } = session;
   const [input, setInput] = useState("");
-  const [memoOpen, setMemoOpen] = useState(false);
-  const [memo, setMemo] = useState("");
-  const memoPanelId = useId();
   const resetKey = `${position}-${q.id}`;
-  useEffect(() => {
+  const [prevKey, setPrevKey] = useState(resetKey);
+  if (prevKey !== resetKey) {
+    setPrevKey(resetKey);
     setInput("");
-    setMemo("");
-  }, [resetKey]);
+  }
   const parsedInput = parseNumericAnswer(input);
   return (
     <section className="question-card card">
@@ -90,43 +89,10 @@ export function QuestionCard({
           2026.09.01
         </div>
         <div className="question-tool-buttons">
-          <button
-            type="button"
-            className="memo-toggle"
-            aria-label={memoOpen ? "メモを閉じる" : "メモを開く"}
-            aria-expanded={memoOpen}
-            aria-controls={memoPanelId}
-            onClick={() => setMemoOpen((v) => !v)}
-          >
-            <NotebookPen size={16} />
-            <span>メモ</span>
-          </button>
+          <Memo resetKey={resetKey} />
           <Calculator resetKey={resetKey} />
         </div>
       </div>
-      {memoOpen && (
-        <div id={memoPanelId} className="question-memo">
-          <div className="question-memo-header">
-            <span>途中計算・メモ</span>
-            <button
-              type="button"
-              className="question-memo-clear"
-              disabled={!memo}
-              onClick={() => setMemo("")}
-            >
-              <Eraser size={14} />
-              クリア
-            </button>
-          </div>
-          <textarea
-            aria-label="途中計算・メモ"
-            placeholder="途中計算やメモを自由に入力できます（次の問題へ進むと自動でクリアされます）"
-            rows={3}
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
-          />
-        </div>
-      )}
       <div className="answers">
         {q.kind === "knowledge" ? (
           q.choices.map((choice, i) => (
@@ -162,6 +128,7 @@ export function QuestionCard({
               >
                 <input
                   type="text"
+                  size={1}
                   inputMode="numeric"
                   aria-label="解答の数値"
                   placeholder="数値を入力"

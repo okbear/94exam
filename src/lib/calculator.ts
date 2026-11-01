@@ -17,9 +17,9 @@ export const initialCalculator = (): CalculatorState => ({
   error: null,
 });
 
-// Parse only numbers and the four operators. Multiplication/division precede addition/subtraction.
+// Parse only numbers, percent, and the four operators. Multiplication/division precede addition/subtraction.
 export function calculate(expression: string): string {
-  const tokens = expression.match(/\d+(?:\.\d*)?|\.\d+|[+\-*/]/g);
+  const tokens = expression.match(/\d+(?:\.\d*)?|\.\d+|%|[+\-*/]/g);
   if (!tokens || tokens.join("") !== expression)
     throw new Error("式を確認してください");
   let position = 0;
@@ -35,7 +35,12 @@ export function calculate(expression: string): string {
     const token = tokens![position++];
     if (!token || !/^\d*\.?\d+$|^\d+\.$/.test(token))
       throw new Error("式を確認してください");
-    return Number(token);
+    let value = Number(token);
+    while (tokens![position] === "%") {
+      position++;
+      value /= 100;
+    }
+    return value;
   }
   function product(): number {
     let value = operand();
@@ -93,12 +98,17 @@ export function calculatorReducer(
     }
   }
   const input = action.value;
-  if (!/^[0-9.+\-*/]$/.test(input)) return state;
+  if (!/^[0-9.+\-*/%]$/.test(input)) return state;
   const operator = /^[+\-*/]$/.test(input);
   let expression =
-    state.error || (state.evaluated && !operator) ? "0" : state.expression;
+    state.error || (state.evaluated && !operator && input !== "%")
+      ? "0"
+      : state.expression;
   if (expression.length >= 100) return state;
-  if (operator) {
+  if (input === "%") {
+    if (!/\d$/.test(expression)) return state;
+    expression += "%";
+  } else if (operator) {
     if (/[+\-*/]$/.test(expression))
       expression =
         input === "-" && !expression.endsWith("-")
@@ -106,10 +116,12 @@ export function calculatorReducer(
           : expression.replace(/[+\-*/]+$/, input);
     else expression += input;
   } else if (input === ".") {
+    if (expression.endsWith("%")) return state;
     const current = expression.split(/[+\-*/]/).at(-1)!;
     if (current.includes(".")) return state;
     expression += current === "" ? "0." : ".";
   } else {
+    if (expression.endsWith("%")) return state;
     const current = expression.split(/[+\-*/]/).at(-1)!;
     expression =
       current === "0" ? expression.slice(0, -1) + input : expression + input;

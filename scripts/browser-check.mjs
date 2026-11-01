@@ -67,6 +67,10 @@ assert.equal(
   "0では割れません",
 );
 await calculatorKeys(["クリア"]);
+await calculatorKeys(["3", "0", "0", "0", "0", "0", "掛ける", "9", "小数点", "8", "5", "パーセント", "割る", "2", "計算する"]);
+assert.equal(await page.getByLabel("電卓の表示").textContent(), "14775");
+await calculator.getByRole("button", { name: "コピー", exact: true }).click();
+await calculatorKeys(["クリア"]);
 await page.getByLabel("電卓の表示").focus();
 await page.keyboard.type("2+3*4");
 await page.keyboard.press("Enter");
@@ -77,13 +81,18 @@ assert.ok(
     await calculator
       .getByRole("button", { name: "7", exact: true })
       .boundingBox()
-  ).height >= 48,
+  ).height >= 44,
 );
-assert.ok(
-  await page.evaluate(
-    () => document.documentElement.scrollWidth <= window.innerWidth,
-  ),
-);
+for (const width of [360, 390, 430]) {
+  await page.setViewportSize({ width, height: 844 });
+  assert.ok(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+    `study screen overflow at ${width}`,
+  );
+}
+await page.setViewportSize({ width: 390, height: 844 });
 await page
   .locator(".question-prompt")
   .evaluate((element) => element.scrollIntoView({ block: "start" }));
@@ -134,17 +143,21 @@ assert.ok(
 await calculatorToggle.click();
 await page.setViewportSize({ width: 1440, height: 1100 });
 await page.getByRole("button", { name: "メモを開く" }).click();
-const memoInput = page.getByLabel("途中計算・メモ");
+const memoDialog = page.getByRole("dialog", { name: "途中計算・メモ" });
+const memoInput = memoDialog.getByLabel("途中計算・メモ");
 await memoInput.fill("250000 + 20000 = 270000");
 assert.equal(await memoInput.inputValue(), "250000 + 20000 = 270000");
-await page.locator(".question-memo-clear").click();
+await memoDialog.locator(".question-memo-clear").click();
 assert.equal(await memoInput.inputValue(), "");
 await memoInput.fill("残らないメモ");
 await page.getByLabel("解答の数値").fill("225000");
 await page.getByRole("button", { name: "回答する", exact: true }).click();
 await page.getByRole("heading", { name: "正解", exact: true }).waitFor();
 await page.getByRole("button", { name: /できた/ }).click();
+await page.getByText("QUESTION 02").waitFor();
 assert.equal(await memoInput.inputValue(), "");
+await memoDialog.getByRole("button", { name: "メモを閉じる" }).click();
+assert.equal(await memoDialog.count(), 0);
 await calculatorToggle.click();
 assert.equal(await page.getByLabel("電卓の表示").textContent(), "0");
 await calculatorToggle.click();

@@ -8,11 +8,19 @@ import {
 } from "react";
 import {
   Calculator as CalculatorIcon,
-  SquareArrowOutUpRight,
+  Check,
+  Copy,
   Delete,
+  Percent,
+  RotateCcw,
+  SquareArrowOutUpRight,
 } from "lucide-react";
 import { CalculatorPopup } from "./calculator-popup";
-import { calculatorReducer, initialCalculator } from "../../../lib/calculator";
+import {
+  calculate,
+  calculatorReducer,
+  initialCalculator,
+} from "../../../lib/calculator";
 const keys = [
   { value: "7" },
   { value: "8" },
@@ -39,22 +47,27 @@ const displayExpression = (value: string) =>
     .replaceAll("-", " − ");
 export function Calculator({ resetKey }: { resetKey?: string }) {
   const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [state, dispatch] = useReducer(
     calculatorReducer,
     undefined,
     initialCalculator,
   );
+  const [prevKey, setPrevKey] = useState(resetKey);
+  if (prevKey !== resetKey) {
+    setPrevKey(resetKey);
+    setCopied(false);
+    dispatch({ type: "clear" });
+  }
   const panelId = useId();
   const trigger = useRef<HTMLButtonElement>(null);
   const history = useRef<HTMLDivElement>(null);
   const display = useRef<HTMLOutputElement>(null);
   useEffect(() => {
-    dispatch({ type: "clear" });
-  }, [resetKey]);
-  useEffect(() => {
     if (open) display.current?.focus({ preventScroll: true });
   }, [open]);
   useEffect(() => {
+    setCopied(false);
     if (!open) return;
     if (display.current)
       display.current.scrollLeft = display.current.scrollWidth;
@@ -65,13 +78,28 @@ export function Calculator({ resetKey }: { resetKey?: string }) {
     setOpen(false);
     trigger.current?.focus({ preventScroll: true });
   }
+  async function copyResult() {
+    if (state.error) return;
+    let value = state.expression;
+    try {
+      value = calculate(state.expression);
+    } catch {
+      // Keep raw expression if incomplete.
+    }
+    try {
+      await navigator.clipboard?.writeText(value);
+      setCopied(true);
+    } catch {
+      // Ignore if clipboard API is unavailable.
+    }
+  }
   function handleKey(event: KeyboardEvent<HTMLElement>) {
     // Handle shortcuts only while focus is inside the calculator, leaving answer controls alone.
     if (event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.key === "Tab" || event.key === " ") return;
     if (event.key === "Enter" && event.target instanceof HTMLButtonElement)
       return;
-    if (/^[0-9.+\-*/]$/.test(event.key)) {
+    if (/^[0-9.+\-*/%]$/.test(event.key)) {
       event.preventDefault();
       dispatch({ type: "input", value: event.key });
     } else if (event.key === "=" || event.key === "Enter") {
@@ -122,16 +150,37 @@ export function Calculator({ resetKey }: { resetKey?: string }) {
             </output>
           </div>
           <div className="calculator-tools">
-            <button type="button" onClick={() => dispatch({ type: "clear" })}>
-              クリア
+            <button
+              type="button"
+              aria-label="クリア"
+              title="クリア"
+              onClick={() => dispatch({ type: "clear" })}
+            >
+              <RotateCcw size={16} />
             </button>
             <button
               type="button"
               aria-label="1文字削除"
+              title="1文字削除"
               onClick={() => dispatch({ type: "backspace" })}
             >
-              <Delete size={19} />
-              1文字削除
+              <Delete size={17} />
+            </button>
+            <button
+              type="button"
+              aria-label="パーセント"
+              title="パーセント"
+              onClick={() => dispatch({ type: "input", value: "%" })}
+            >
+              <Percent size={16} />
+            </button>
+            <button
+              type="button"
+              aria-label="コピー"
+              title={copied ? "コピーしました" : "コピー"}
+              onClick={() => void copyResult()}
+            >
+              {copied ? <Check size={16} /> : <Copy size={16} />}
             </button>
           </div>
           <div className="calculator-keys">

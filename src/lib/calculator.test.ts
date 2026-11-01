@@ -11,11 +11,14 @@ function enter(keys: string) {
   );
 }
 describe("four-operation calculator", () => {
-  it("uses multiplication/division precedence and supports negative results", () => {
+  it("uses multiplication/division precedence, percent, and supports negative results", () => {
     expect(calculate("2+3*4")).toBe("14");
     expect(calculate("20/4-8")).toBe("-3");
     expect(calculate("5*-2")).toBe("-10");
     expect(calculate("20/5*2")).toBe("8");
+    expect(calculate("25%")).toBe("0.25");
+    expect(calculate("300000*9.85%/2")).toBe("14775");
+    expect(enter("300000*18.3%/2=").expression).toBe("27450");
   });
   it("avoids decimal artifacts and keeps small results usable in another calculation", () => {
     expect(calculate("0.1+0.2")).toBe("0.3");

@@ -607,6 +607,7 @@ footer > small {
 }
 .question-card {
   padding: 25px 28px;
+  min-width: 0;
 }
 .question-meta {
   display: flex;
@@ -680,8 +681,10 @@ footer > small {
 }
 .answers {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 11px;
   margin: 23px 0;
+  min-width: 0;
 }
 .answer {
   display: flex;
@@ -740,14 +743,18 @@ footer > small {
 }
 .calculation-answer {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 11px;
+  min-width: 0;
 }
 .calculation-input-row {
   display: flex;
   gap: 10px;
+  min-width: 0;
 }
 .calculation-input-wrap {
   flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -773,6 +780,7 @@ footer > small {
 }
 .calculation-input-wrap input {
   flex: 1;
+  width: 100%;
   min-width: 0;
   border: 0;
   background: transparent;
@@ -1360,7 +1368,7 @@ footer > small {
     gap: 10px;
   }
   .study-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .study-aside {
     display: none;
@@ -1958,7 +1966,8 @@ footer > small {
   justify-content: flex-end;
   gap: 8px;
 }
-.calculator {
+.calculator,
+.memo {
   flex-shrink: 0;
 }
 .calculator-toggle,
@@ -1981,47 +1990,52 @@ footer > small {
   background: #edf3f9;
   border-color: #a9bfd3;
 }
-.question-memo {
-  margin-top: 10px;
-  border: 1px solid #d5dfe9;
-  border-radius: 4px;
-  background: #f8fafc;
-  padding: 8px 10px 10px;
+.memo-popup {
+  right: 260px;
+  width: 256px;
 }
-.question-memo-header {
+.memo-panel {
+  padding: 8px;
+  display: grid;
+  gap: 6px;
+}
+.memo-panel textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #ccd7e2;
+  border-radius: 3px;
+  background: #f5f8fb;
+  padding: 8px 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: inherit;
+  resize: vertical;
+  min-height: 96px;
+}
+.memo-panel textarea:focus {
+  outline: none;
+  border-color: #6e9bc4;
+  background: #fff;
+}
+.memo-tools {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 6px;
-  font-size: 12px;
-  color: #5a7086;
-  font-weight: 600;
+  justify-content: flex-end;
 }
 .question-memo-clear {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  padding: 4px 8px;
+  min-height: 30px;
+  padding: 0 10px;
   border: 1px solid #d5dfe9;
-  border-radius: 3px;
-  background: #fff;
+  border-radius: 4px;
+  background: #f7f9fb;
   color: #5a7086;
   font-size: 11px;
 }
 .question-memo-clear:disabled {
   opacity: 0.5;
-}
-.question-memo textarea {
-  display: block;
-  width: 100%;
-  border: 1px solid #d5dfe9;
-  border-radius: 3px;
-  background: #fff;
-  padding: 8px 10px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: inherit;
-  resize: vertical;
 }
 .calculator-panel {
   padding: 13px;
@@ -2054,7 +2068,7 @@ footer > small {
 }
 .calculator-tools {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   margin: 10px 0 8px;
 }
@@ -2225,6 +2239,15 @@ footer > small {
     bottom: calc(10px + env(safe-area-inset-bottom, 0px));
     width: 224px;
     max-width: calc(100vw - 24px);
+  }
+  .memo-popup {
+    right: auto;
+    left: 12px;
+    width: 236px;
+  }
+  .question-memo-clear {
+    min-height: 40px;
+    font-size: 12px;
   }
   .calculator-popup-header {
     padding-top: 2px;
