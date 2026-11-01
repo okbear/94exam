@@ -2028,7 +2028,7 @@ footer > small {
   right: 24px;
   bottom: 20px;
   z-index: 40;
-  width: 300px;
+  width: 224px;
   max-width: calc(100vw - 16px);
   max-height: calc(100dvh - 16px);
   overflow-y: auto;
@@ -2041,8 +2041,8 @@ footer > small {
 .calculator-popup-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 10px 6px 14px;
+  gap: 6px;
+  padding: 2px 4px 2px 8px;
   background: #edf3f9;
   border-bottom: 1px solid #d8e2ec;
   color: #436582;
@@ -2067,8 +2067,8 @@ footer > small {
 .calculator-popup-header button {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border: 0;
   border-radius: 3px;
@@ -2080,42 +2080,49 @@ footer > small {
   border-top: 0;
   margin: 0;
   max-width: none;
-  padding: 8px;
+  padding: 6px;
 }
 .calculator-popup .calculator-display {
-  padding: 6px 10px;
+  padding: 4px 7px;
 }
 .calculator-popup .calculator-display output {
   white-space: nowrap;
   overflow-x: auto;
-  font-size: 24px;
-  min-height: 36px;
+  font-size: 20px;
+  line-height: 1.4;
+  min-height: 28px;
 }
 .calculator-popup .calculator-history {
   white-space: nowrap;
   overflow-x: auto;
-  min-height: 18px;
+  min-height: 14px;
+  line-height: 1.4;
   font-size: 10px;
 }
 .calculator-popup .calculator-tools {
-  margin-top: 8px;
-  gap: 7px;
+  margin: 5px 0;
+  gap: 4px;
 }
 .calculator-popup .calculator-tools button {
-  min-height: 42px;
+  min-height: 32px;
+  gap: 4px;
+  padding: 0 4px;
+  font-size: 11px;
 }
 .calculator-popup .calculator-keys {
-  gap: 7px;
+  gap: 4px;
 }
 .calculator-popup .calculator-keys button {
-  min-height: 50px;
+  min-height: 40px;
+  padding: 0;
+  font-size: 18px;
 }
 @media (max-width: 640px) {
   .calculator-popup {
     right: 12px;
     bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-    width: calc(100% - 24px);
-    max-width: 320px;
+    width: 224px;
+    max-width: calc(100vw - 24px);
   }
   .calculator-popup-header {
     padding-top: 2px;
@@ -2126,31 +2133,25 @@ footer > small {
     height: 44px;
   }
   .calculator-popup .calculator-keys button {
-    min-height: 50px;
-    font-size: 21px;
+    min-height: 44px;
+    font-size: 19px;
   }
   .calculator-popup .calculator-tools button {
     min-height: 44px;
   }
   body:has(.calculator-popup) .is-studying main {
-    padding-bottom: calc(410px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(360px + env(safe-area-inset-bottom, 0px));
   }
 }
 @media (max-width: 640px) and (max-height: 700px) {
-  .calculator-popup .calculator-keys button {
-    min-height: 48px;
-  }
-  .calculator-popup .calculator-keys {
-    gap: 6px;
-  }
   .calculator-popup .calculator-history {
     display: none;
   }
   .calculator-popup .calculator-tools {
-    margin: 6px 0;
+    margin: 5px 0;
   }
   .calculator-popup .calculator-panel {
-    padding: 8px;
+    padding: 6px;
   }
 }
 .difficulty-selector {
