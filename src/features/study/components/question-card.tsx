@@ -66,10 +66,9 @@ export function QuestionCard({
       <div className="session-progress">
         <span style={{ width: `${(position / queue.length) * 100}%` }} />
       </div>
-      <span className="question-number">
+      <h2 className="question-number">
         QUESTION {String(position + 1).padStart(2, "0")}
-      </span>
-      <h2>{q.title}</h2>
+      </h2>
       <p className="question-prompt">{q.prompt}</p>
       {q.referenceMaterials && <ReferenceMaterials key={resetKey} materials={q.referenceMaterials} />}
       {q.materials && (

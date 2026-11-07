@@ -2,11 +2,11 @@ import { describe, expect, it } from "vitest";
 import { caseQuestions, parseQuestion, questions, standardQuestions, recallQuestions } from "./questions";
 
 describe("original case and reference-material questions", () => {
-  it("preserves the original banks and adds 8 knowledge and 16 reference calculations", () => {
-    expect(standardQuestions).toHaveLength(64);
+  it("includes 8 case knowledge problems and 16 case calculations with references", () => {
+    expect(standardQuestions).toHaveLength(69);
     expect(recallQuestions).toHaveLength(24);
     expect(caseQuestions).toHaveLength(24);
-    expect(questions).toHaveLength(172);
+    expect(questions).toHaveLength(177);
     expect(caseQuestions.filter((q) => q.kind === "knowledge")).toHaveLength(8);
     expect(caseQuestions.filter((q) => q.referenceMaterials)).toHaveLength(16);
     for (const q of caseQuestions) {

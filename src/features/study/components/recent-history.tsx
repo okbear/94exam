@@ -17,7 +17,10 @@ export function RecentHistory({ reviews }: { reviews: Review[] }) {
               >
                 {r.correct ? <Check size={15} /> : <X size={15} />}
               </span>
-              <b>{questions.find((q) => q.id === r.questionId)?.title}</b>
+              <b>
+                {questions.find((q) => q.id === r.questionId)?.prompt.split("\n")[0] ??
+                  "改訂前の問題"}
+              </b>
               <span>{ratingLabels[r.grade]}</span>
               <small>
                 {new Intl.DateTimeFormat("ja-JP", {

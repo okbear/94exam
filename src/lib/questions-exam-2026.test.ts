@@ -8,7 +8,7 @@ const verdicts: Record<string, Verdict> = verdictData;
 describe("exam-style original true/false questions", () => {
   it("adds ten questions per category with complete individual explanations", () => {
     expect(examQuestions).toHaveLength(60);
-    expect(questions).toHaveLength(172);
+    expect(questions).toHaveLength(177);
     for (const category of categories) {
       expect(examQuestions.filter((q) => q.category === category), category).toHaveLength(10);
     }

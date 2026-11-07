@@ -6,6 +6,7 @@ export type LibraryFilters = {
   category: Category | "all";
   search: string;
   onlyBookmarks: boolean;
+  progress: "all" | "answered" | "unanswered";
 };
 
 export type DifficultyFilter = Difficulty | "all";

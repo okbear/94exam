@@ -4,12 +4,14 @@ import { intervalLabel, type SavedCard } from "../../../lib/study";
 export function LibraryQuestion({
   question: q,
   card,
+  attempts,
   bookmarked,
   onBookmark,
   onStart,
 }: {
   question: Question;
   card?: SavedCard;
+  attempts?: { correct: number; total: number };
   bookmarked: boolean;
   onBookmark: () => void;
   onStart: () => void;
@@ -18,7 +20,8 @@ export function LibraryQuestion({
     <div className="library-row">
       <button
         className={bookmarked ? "icon-button bookmarked" : "icon-button"}
-        aria-label={`${q.title}のブックマーク`}
+        aria-label={bookmarked ? "ブックマークを解除" : "ブックマークに追加"}
+        aria-pressed={bookmarked}
         onClick={() => onBookmark()}
       >
         <Bookmark size={18} />
@@ -33,19 +36,25 @@ export function LibraryQuestion({
               : "知識"}{" "}
           · {q.category}{q.referenceMaterials ? " · 別資料あり" : ""}
         </small>
-        <b>{q.title}</b>
         <span>{q.prompt}</span>
       </button>
-      <span className="library-due">
-        {card
-          ? Date.parse(card.dueAt) <= Date.now()
-            ? "復習のタイミング"
-            : intervalLabel(card.dueAt)
-          : "未学習"}
-      </span>
+      <div className="library-due">
+        <b>
+          {attempts
+            ? `正解 ${attempts.correct}回 / 回答 ${attempts.total}回`
+            : "未回答"}
+        </b>
+        {card && (
+          <span>
+            {Date.parse(card.dueAt) <= Date.now()
+              ? "復習のタイミング"
+              : `次回の復習 ${intervalLabel(card.dueAt)}`}
+          </span>
+        )}
+      </div>
       <button
         className="icon-button"
-        aria-label={`${q.title}を解く`}
+        aria-label="この問題を解く"
         onClick={() => onStart()}
       >
         <ArrowRight size={18} />

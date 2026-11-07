@@ -58,13 +58,10 @@
   background: #709bc1;
   height: 100%;
 }
-.question-number {
-  font-size: 10px;
-  color: #7d8ea0;
-}
-.question-card h2 {
-  font-size: 21px;
-  margin: 8px 0 18px;
+.question-card .question-number {
+  font-size: 12px;
+  color: #627689;
+  margin: 0 0 12px;
   font-weight: 700;
 }
 .question-prompt {

@@ -16,8 +16,9 @@ try {
     const sample = width === 360 ? questions : questions.filter((q) => /-(base|tax|law)-(1|6|8|10)$/.test(q.id));
     for (const q of sample) {
       await page.getByLabel("問題を検索").fill(q.title);
-      await page.getByRole("button", { name: `${q.title}を解く`, exact: true }).click();
-      await page.getByRole("heading", { name: q.title, exact: true }).waitFor();
+      await page.getByRole("button", { name: "この問題を解く", exact: true }).click();
+      await page.getByRole("heading", { name: "QUESTION 01", exact: true }).waitFor();
+      assert.equal(await page.getByRole("heading", { name: q.title, exact: true }).count(), 0);
       assert.equal(await page.locator(".question-prompt").textContent(), q.prompt);
       const answers = page.locator(".answers > button.answer:not(.answer-unknown)");
       assert.equal(await answers.count(), 4);
@@ -34,7 +35,7 @@ try {
     }
     const q = questions[0];
     await page.getByLabel("問題を検索").fill(q.title);
-    await page.getByRole("button", { name: `${q.title}を解く`, exact: true }).click();
+    await page.getByRole("button", { name: "この問題を解く", exact: true }).click();
     await page.locator(".answers > button.answer:not(.answer-unknown)").nth((q.answer + 1) % 4).click();
     await page.getByRole("heading", { name: "不正解", exact: true }).waitFor();
     assert.equal(await page.locator(".answers > button.correct").count(), 1);

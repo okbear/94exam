@@ -84,23 +84,19 @@
   color: #8092a4;
   margin-bottom: 4px;
 }
-.library-question b {
-  display: block;
-  font-size: 13px;
-  color: #355f84;
-  font-weight: 700;
-}
 .library-question > span {
   display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 600px;
-  font-size: 11px;
-  color: #8693a0;
+  font-size: 13px;
+  color: #355f84;
   margin-top: 4px;
 }
 .library-due {
+  display: grid;
+  gap: 4px;
   font-size: 11px;
   color: #7d8c9c;
   white-space: nowrap;
@@ -175,6 +171,10 @@
 }
 .history-row b {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-weight: 400;
 }
 .history-row > span:not(.result-dot) {

@@ -13,8 +13,8 @@ const schedulerPromise = DefaultScheduler({
   version: "FSRS-7",
   desiredRetention: 0.9,
   enableShortTerm: true,
-  learningSteps: ["1m", "10m"],
-  relearningSteps: ["10m"],
+  learningSteps: ["12h", "20h"],
+  relearningSteps: ["12h"],
   enableFuzz: false,
 });
 type Scheduler = Awaited<typeof schedulerPromise>;

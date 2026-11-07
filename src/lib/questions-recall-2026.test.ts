@@ -1,13 +1,18 @@
 import { describe, it, expect } from "vitest";
 import { questions, recallQuestions, standardQuestions } from "./questions";
 describe("knowledge-applied calculation questions", () => {
-  it("adds 24 questions without removing any of the original 64", () => {
-    expect(questions).toHaveLength(172);
-    expect(standardQuestions).toHaveLength(64);
+  it("retains the 24 practice problems and identifies those that require rules from memory", () => {
+    expect(questions).toHaveLength(177);
+    expect(standardQuestions).toHaveLength(69);
     expect(recallQuestions).toHaveLength(24);
     for (const q of recallQuestions) {
       expect(q.kind).toBe("calculation");
-      expect(q.knowledgeRequired).toBe(true);
+      if (q.id === "recall-18" || q.id === "recall-23") {
+        expect(q.knowledgeRequired).toBeUndefined();
+        expect(q.referenceMaterials).toHaveLength(1);
+      } else {
+        expect(q.knowledgeRequired).toBe(true);
+      }
       expect(q.source).toMatch(/^https:\/\//);
       expect(q.prompt, q.id).not.toMatch(
         /[%％]|1\.25|1\.35|1\.50|1\.75|573万円|150万円|1,000円未満/,

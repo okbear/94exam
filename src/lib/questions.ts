@@ -213,6 +213,7 @@ export function parseQuestionBank(raw: unknown): Question[] {
   return parsed;
 }
 
+export const retiredQuestionIds = ["ins-k6", "ins-k8"] as const;
 export const edition = editionData;
 export const standardQuestions: Question[] = parseQuestionBank(
   standardQuestionsData,

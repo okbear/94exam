@@ -32,9 +32,12 @@ describe("FSRS scheduling and persistence", () => {
       correct: false,
       grade: Rating.Again,
     });
-    expect(makeQueue(data, undefined, now)).not.toContain("base-1");
+    expect(data.cards["base-1"].scheduleStatus).toBe("learning");
+    expect(data.cards["base-1"].dueAt).toBe("2026-11-01T12:00:00.000Z");
+    expect(makeQueue(data, undefined, new Date(now.getTime() + 11 * 60000)))
+      .not.toContain("base-1");
     expect(
-      makeQueue(data, undefined, new Date(now.getTime() + 11 * 60000))[0],
+      makeQueue(data, undefined, new Date(now.getTime() + 12 * 60 * 60000))[0],
     ).toBe("base-1");
   });
   it("keeps future reviews out of the queue and orders due reviews before new cards", async () => {

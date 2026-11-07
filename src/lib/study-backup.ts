@@ -1,10 +1,10 @@
-import { questions } from "./questions";
+import { questions, retiredQuestionIds } from "./questions";
 import { isTargetDate } from "./target-schedule";
 import type { Review, SavedCard, StudyData } from "./study";
 
 export const maxBackupBytes = 8 * 1024 * 1024;
 export const maxReviews = 50_000;
-const defaultQuestionIds = new Set(questions.map((q) => q.id));
+const defaultQuestionIds = new Set([...questions.map((q) => q.id), ...retiredQuestionIds]);
 const invalid = () => new Error("学習データの形式が正しくありません。");
 function object(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);

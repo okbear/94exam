@@ -13,7 +13,6 @@ import {
   type StudyData,
 } from "../../../lib/study";
 import type { Genre } from "../types";
-export const sessionSize = 10;
 export type SelectedAnswer = number | "unknown";
 type SessionState = {
   queue: string[];
@@ -56,7 +55,7 @@ export function useStudySession(
           new Date(),
           genre === "all" ? undefined : genre,
           difficulty,
-        ).slice(0, sessionSize);
+        ).slice(0, data.goal);
     busyRef.current = false;
     setState({ ...initialSession(), queue });
   }

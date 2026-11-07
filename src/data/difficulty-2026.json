@@ -22,7 +22,7 @@
     "base-k1",
     "ins-k4",
     "ins-k5",
-    "ins-k6",
+    "ins-care-eligibility",
     "ins-k7",
     "tax-k1",
     "tax-k3",
@@ -45,7 +45,9 @@
     "exam-base-7",
     "exam-time-7",
     "exam-ins-7",
-    "exam-tax-7"
+    "exam-tax-7",
+    "payment-income",
+    "payment-resident"
   ],
   "intermediate": [
     "recall-1",
@@ -66,7 +68,7 @@
     "base-k2",
     "ins-k1",
     "ins-k2",
-    "ins-k8",
+    "ins-support-funding",
     "tax-k2",
     "bonus-k2",
     "bonus-k3",
@@ -119,7 +121,10 @@
     "exam-bonus-7",
     "exam-bonus-8",
     "exam-law-7",
-    "exam-law-8"
+    "exam-law-8",
+    "payment-income-special",
+    "payment-social",
+    "payment-labor"
   ],
   "advanced": [
     "recall-4",

@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { emptyData, previews, recordReview, Rating } from "./study";
+import { getStudySummary } from "./study-summary";
+import { emptyData, makeQueue, previews, recordReview, Rating } from "./study";
 import {
   maxBackupBytes,
   maxReviews,
@@ -54,6 +55,18 @@ describe("backup trust boundary", () => {
       previews(restored, "base-1", new Date(data.cards["base-1"].dueAt)),
     ).resolves.toHaveLength(4);
     expect(Object.prototype).not.toHaveProperty("extra");
+  });
+  it("keeps retired question history in backups without counting it as active progress", async () => {
+    const oldData = await recordReview(
+      emptyData(), "ins-k6", true, Rating.Good, now,
+    );
+    oldData.bookmarks.push("ins-k6");
+    const restored = restoreData(JSON.stringify(oldData));
+    expect(restored).toEqual(oldData);
+    expect(getStudySummary(restored, now)).toMatchObject({ todayCount: 1, learned: 0 });
+    const queue = makeQueue(restored, undefined, new Date(restored.cards["ins-k6"].dueAt));
+    expect(queue).not.toContain("ins-k6");
+    expect(queue).toContain("ins-care-eligibility");
   });
   it("rejects invalid scheduler fields and coerced dates", async () => {
     const data = await recordReview(

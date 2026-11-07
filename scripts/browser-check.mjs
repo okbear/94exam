@@ -267,6 +267,12 @@ await page
   .waitFor();
 await page.getByRole("button", { name: "問題ライブラリ", exact: true }).click();
 await page.getByLabel("問題を検索").fill("給与明細の基本");
+const progressFilter = page.getByRole("group", { name: "回答状況" });
+await progressFilter.getByRole("button", { name: "未回答", exact: true }).click();
+await page.getByText("一致する問題がありません。").waitFor();
+await progressFilter.getByRole("button", { name: "回答済み", exact: true }).click();
+await page.getByText("正解 1回 / 回答 1回", { exact: true }).waitFor();
+await progressFilter.getByRole("button", { name: "回答状況すべて" }).click();
 await page.locator(".library-question").click();
 await page.getByLabel("解答の数値").fill("225,000");
 await page.getByRole("button", { name: "回答する", exact: true }).click();
@@ -294,8 +300,19 @@ await page.getByRole("button", { name: "知識問題" }).click();
 assert.ok((await page.locator(".library-row").count()) > 20);
 await page.getByLabel("問題を検索").fill("年末調整");
 await page.getByText("一致する問題がありません。").waitFor();
+await page.getByLabel("問題を検索").fill("");
+await progressFilter.getByRole("button", { name: "未回答", exact: true }).click();
+assert.ok(await page.locator(".library-row").count() > 0);
+await page.getByRole("button", { name: "この問題を解く", exact: true }).first().click();
+await page.getByRole("heading", { name: "QUESTION 01", exact: true }).waitFor();
+await page.getByRole("button", { name: "ホームへ戻る", exact: true }).click();
+await page.getByRole("button", { name: "問題ライブラリ", exact: true }).click();
+assert.equal(await progressFilter.getByRole("button", { name: "未回答", exact: true }).getAttribute("aria-pressed"), "true");
+await progressFilter.getByRole("button", { name: "回答状況すべて" }).click();
 await page.getByLabel("問題を検索").fill("2026");
 assert.ok((await page.locator(".library-row").count()) >= 3);
+await page.getByRole("button", { name: "設定", exact: true }).click();
+await page.getByRole("combobox").selectOption("15");
 await page.getByRole("button", { name: "学習ホーム", exact: true }).click();
 await page.setViewportSize({ width: 390, height: 844 });
 await page.screenshot({
@@ -321,7 +338,7 @@ await page.screenshot({
   path: "/private/tmp/94exam-mobile-study.png",
   fullPage: true,
 });
-await page.getByRole("button", { name: /もう一度.*(?:分|秒)後/ }).click();
+await page.getByRole("button", { name: /もう一度.*12時間後/ }).click();
 assert.equal(
   await page.evaluate(
     () =>
@@ -329,22 +346,22 @@ assert.equal(
   ),
   1,
 );
-// Finish a complete session after the component/state split.
+// Complete the configured 15-question session without an intermediate results screen.
 await page.getByRole("button", { name: /わからない/ }).click();
 await page.getByRole("heading", { name: "不正解", exact: true }).waitFor();
 assert.equal(await page.locator(".rating").count(), 1);
 await page.locator(".rating").first().click();
-for (let i = 0; i < 8; i++) {
+for (let i = 0; i < 13; i++) {
   await page.locator(".answer").first().click();
   await page.locator(".rating").first().click();
 }
 await page.getByRole("heading", { name: "演習結果", exact: true }).waitFor();
-await page.getByText(/10問に取り組み/).waitFor();
+await page.getByText(/15問に取り組み/).waitFor();
 assert.equal(
   await page.evaluate(
     () => JSON.parse(localStorage.getItem("kyuyo-study-v2")).reviews.length,
   ),
-  11,
+  16,
 );
 await page.getByRole("button", { name: "学習ホームへ", exact: true }).click();
 await page.getByRole("button", { name: "学習の記録", exact: true }).click();
@@ -414,7 +431,7 @@ assert.equal(
   await page.evaluate(
     () => JSON.parse(localStorage.getItem("kyuyo-study-v2")).reviews.length,
   ),
-  11,
+  16,
 );
 await page.getByRole("button", { name: "学習ホーム", exact: true }).click();
 await page.getByRole("button", { name: "出題・教材について" }).click();
@@ -442,7 +459,7 @@ assert.equal(
 await page.getByRole("button", { name: "問題ライブラリ", exact: true }).click();
 await page.getByRole("button", { name: "保存した問題" }).click();
 await difficultyGroup.getByRole("button", { name: /中級/ }).click();
-assert.equal(await page.locator(".library-row").count(), 32);
+assert.equal(await page.locator(".library-row").count(), 75);
 for (const label of await page
   .locator(".library-question small")
   .allTextContents())

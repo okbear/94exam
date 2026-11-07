@@ -14,7 +14,6 @@ import { questions } from "../../../lib/questions";
 import { makeQueue, type StudyData } from "../../../lib/study";
 import type { StudySummary } from "../../../lib/study-summary";
 import type { DifficultyFilter, Genre, StartStudy, View } from "../types";
-import { sessionSize } from "../hooks/use-study-session";
 import { GenreSelector } from "../components/genre-selector";
 import { Stat } from "../components/stat";
 import { CategoryList } from "../components/category-list";
@@ -92,11 +91,11 @@ export function HomeScreen({
       <section className="practice-start card" aria-label="演習を開始">
         <div>
           <h2>復習・新規問題を解く</h2>
-          <p>復習期限を迎えた問題を優先して、1回最大10問出題します。</p>
+          <p>復習期限を迎えた問題を優先し、1日の学習目標（{data.goal}問）まで続けて出題します。</p>
           <span className="session-count">
             今回の出題：
             {Math.min(
-              sessionSize,
+              data.goal,
               makeQueue(
                 data,
                 undefined,

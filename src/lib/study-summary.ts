@@ -1,3 +1,4 @@
+import { questions } from "./questions";
 import { dayKey, type StudyData } from "./study";
 
 export function getStudySummary(data: StudyData, now = new Date()) {
@@ -27,7 +28,7 @@ export function getStudySummary(data: StudyData, now = new Date()) {
     streak++;
     cursor.setUTCDate(cursor.getUTCDate() - 1);
   }
-  const cards = Object.values(data.cards);
+  const cards = questions.flatMap(({ id }) => data.cards[id] ? [data.cards[id]] : []);
   return {
     todayCount: dailyCounts.get(today) ?? 0,
     learned: cards.length,

@@ -30,6 +30,7 @@ export function StudyApp() {
     category: "all",
     search: "",
     onlyBookmarks: false,
+    progress: "all",
   });
   const [, tick] = useState(0);
   useEffect(() => {

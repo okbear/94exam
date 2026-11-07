@@ -422,14 +422,6 @@
   .session-progress {
     margin: 13px 0 20px;
   }
-  .question-number {
-    font-size: 10px;
-  }
-  .question-card h2 {
-    font-size: 21px;
-    margin: 7px 0 17px;
-    line-height: 1.7;
-  }
   .question-prompt {
     font-size: 15px;
     line-height: 2;
@@ -561,10 +553,6 @@
   .library-question small {
     font-size: 10px;
     line-height: 1.9;
-  }
-  .library-question b {
-    font-size: 14px;
-    line-height: 1.8;
   }
   .library-question > span {
     max-width: 100%;

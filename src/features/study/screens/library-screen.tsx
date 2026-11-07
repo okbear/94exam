@@ -33,7 +33,14 @@ export function LibraryScreen({
   bookmark,
   start,
 }: Props) {
-  const { category: filter, search, onlyBookmarks } = filters;
+  const { category: filter, search, onlyBookmarks, progress } = filters;
+  const attemptsByQuestion = new Map<string, { correct: number; total: number }>();
+  for (const review of data.reviews) {
+    const attempts = attemptsByQuestion.get(review.questionId) ?? { correct: 0, total: 0 };
+    attempts.total++;
+    attempts.correct += Number(review.correct);
+    attemptsByQuestion.set(review.questionId, attempts);
+  }
   const normalizedQuery = search.trim().normalize("NFKC").toLowerCase();
   const visibleQuestions = questions.filter(
     (q) =>
@@ -41,6 +48,8 @@ export function LibraryScreen({
       (kind === "all" || q.kind === kind) &&
       (difficulty === "all" || q.difficulty === difficulty) &&
       (!onlyBookmarks || data.bookmarks.includes(q.id)) &&
+      (progress === "all" ||
+        attemptsByQuestion.has(q.id) === (progress === "answered")) &&
       (!normalizedQuery ||
         `${q.title}${q.prompt}${q.category}${q.referenceMaterials ? "別資料" + q.referenceMaterials.map((m) => m.title).join("") : ""}`
           .normalize("NFKC")
@@ -51,7 +60,7 @@ export function LibraryScreen({
     <>
       <PageTitle
         title="問題ライブラリ"
-        description="難易度・ジャンル・分野・キーワードで絞り込めます。"
+        description="難易度・ジャンル・分野・回答状況・キーワードで絞り込めます。"
       />
       <DifficultySelector
         value={difficulty}
@@ -109,12 +118,31 @@ export function LibraryScreen({
           />
         </label>
       </div>
+      <div className="library-toolbar">
+        <div className="filter-tabs" role="group" aria-label="回答状況">
+          {([
+            ["all", "回答状況すべて"],
+            ["unanswered", "未回答"],
+            ["answered", "回答済み"],
+          ] as const).map(([value, label]) => (
+            <button
+              key={value}
+              className={progress === value ? "active" : ""}
+              aria-pressed={progress === value}
+              onClick={() => onFiltersChange({ ...filters, progress: value })}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="library-list card">
         {visibleQuestions.map((q) => (
           <LibraryQuestion
             key={q.id}
             question={q}
             card={data.cards[q.id]}
+            attempts={attemptsByQuestion.get(q.id)}
             bookmarked={data.bookmarks.includes(q.id)}
             onBookmark={() => bookmark(q.id)}
             onStart={() => start(undefined, q.id)}
